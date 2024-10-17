@@ -101,6 +101,12 @@ const routes: Routes = [
           ),
         canActivate: [AuthGuardService],
       },
+      {
+        path: "movies",
+        loadChildren: () =>
+          import("./pages/movies/movies.module").then((m) => m.MoviesModule),
+        canActivate: [AuthGuardService],
+      },
     ],
   },
   {
@@ -115,7 +121,6 @@ const routes: Routes = [
           ),
       },
     ],
-    
   },
   {
     path: "",

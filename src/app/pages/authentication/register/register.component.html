@@ -34,13 +34,7 @@
                 placeholder="Enter Name"
                 type="text"
                 formControlName="name"
-                [readonly]="verification_code_sent"
                 data-placement="top"
-                [title]="
-                  verification_code_sent
-                    ? 'can not re enter name after verification code sent '
-                    : ''
-                "
               />
 
               <mat-error
@@ -71,16 +65,7 @@
                 placeholder="Enter Email"
                 type="text"
                 formControlName="email"
-                [readonly]="verification_code_sent"
                 data-placement="top"
-                [title]="
-                  verification_code_sent
-                    ? 'can not re enter email after verification code sent '
-                    : ''
-                "
-                [ngClass]="{
-                  'cursor-not-allowed': verification_code_sent
-                }"
               />
 
               <mat-error
@@ -89,77 +74,6 @@
                   rForm.controls['email'].touched
                 "
                 >Valid email is required</mat-error
-              >
-            </mat-form-field>
-
-            <!-- password -->
-            <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block"
-              >Email verification code</mat-label
-            >
-
-            <mat-form-field appearance="outline" class="w-100" color="primary">
-              <input
-                matInput
-                placeholder="Enter verification code"
-                type="text"
-                formControlName="email_verification_code"
-                (input)="handleVerificationCode()"
-                [readonly]="verfication_code_verified"
-              />
-
-              <span
-                class="font-weight-bold cursor-pointer get-code-btn"
-                (click)="sendAuthCode()"
-                *ngIf="!verification_code_sent"
-                [ngClass]="{
-                  ' text-grey ': 
-                  !rForm.controls['email'].valid ||
-                  !rForm.controls['name'].valid,
-                  ' text-primary ':  rForm.controls['email'].valid &&
-                  rForm.controls['name'].valid,
-                }"
-              >
-                get code
-              </span>
-
-              <span
-                *ngIf="
-                  timerEnd &&
-                  !verfication_code_verified &&
-                  verification_code_sent
-                "
-                (click)="sendAuthCode()"
-                class="text-primary font-weight-bold cursor-pointer"
-              >
-                resend
-              </span>
-
-              <span
-                class="text-primary d-flex align-items-center"
-                *ngIf="
-                  verification_code_sent &&
-                  !timerEnd &&
-                  !verfication_code_verified
-                "
-              >
-                {{ currentTime }}
-                <i class="far fa-clock ml-1 font-1" aria-hidden="true"></i>
-              </span>
-
-              <span
-                *ngIf="verfication_code_verified"
-                class="text-primary font-weight-bold cursor-pointer d-flex align-items-center font-0-9-5"
-              >
-                <i class="fa fa-check mr-2" aria-hidden="true"></i>
-                <span> verified </span>
-              </span>
-
-              <mat-error
-                *ngIf="
-                  !rForm.controls['email_verification_code'].valid &&
-                  rForm.controls['email_verification_code'].touched
-                "
-                >verification code is required</mat-error
               >
             </mat-form-field>
 
@@ -193,96 +107,15 @@
               "
                 >Password is required</mat-error
               >
+              <mat-error
+                *ngIf="
+                 !rForm.controls['password']?.errors?.['required'] &&
+                rForm.controls['password']?.errors?.['minlength'] &&
+                rForm.controls['password'].touched
+              "
+                >Password needs to have at least 8 characters</mat-error
+              >
             </mat-form-field>
-
-            <!-- Password validation icons -->
-            <div
-              class="mb-4 ml-1 password-validation-icons row"
-              *ngIf="
-              !rForm.controls['password']?.errors?.['required'] &&
-              rForm.controls['password'].touched
-            "
-            >
-              <div
-                class="col-12 font-0-7-5 font-weight-500 mb-2 pl-0 text-gray-100"
-              >
-                password must be contain at least:
-              </div>
-
-              <div
-                class="strong-password-error-div"
-                [ngClass]="{
-                  ' text-red ': !isLowerCaseValid(),
-                  ' text-success  ': isLowerCaseValid(),
-                }"
-              >
-                <i
-                  class="strong-password-error-icon"
-                  [ngClass]="{
-                      'fas fa-solid fa-circle-xmark  ': !isLowerCaseValid(),
-                      'fas fa-check-circle': isLowerCaseValid(),
-                    }"
-                ></i>
-                <span class="strong-password-error-text"
-                  >one lowercase letter</span
-                >
-              </div>
-
-              <div
-                class="strong-password-error-div"
-                [ngClass]="{
-                  ' text-red ': !isUpperCaseValid(),
-                  ' text-success  ': isUpperCaseValid(),
-                }"
-              >
-                <i
-                  class="strong-password-error-icon"
-                  [ngClass]="{
-                      'fas fa-solid fa-circle-xmark  ': !isUpperCaseValid(),
-                      'fas fa-check-circle': isUpperCaseValid(),
-                    }"
-                ></i>
-                <span class="strong-password-error-text"
-                  >one uppercase letter</span
-                >
-              </div>
-
-              <div
-                class="strong-password-error-div"
-                [ngClass]="{
-                  ' text-red ': !isNumberValid(),
-                  ' text-success  ': isNumberValid(),
-                }"
-              >
-                <i
-                  class="strong-password-error-icon"
-                  [ngClass]="{
-                      'fas fa-solid fa-circle-xmark  ': !isNumberValid(),
-                      'fas fa-check-circle': isNumberValid(),
-                    }"
-                ></i>
-                <span class="strong-password-error-text"> one number</span>
-              </div>
-
-              <div
-                class="strong-password-error-div"
-                [ngClass]="{
-                  ' text-red ': !isLengthValid(),
-                  ' text-success  ': isLengthValid(),
-                }"
-              >
-                <i
-                  class="strong-password-error-icon"
-                  [ngClass]="{
-                      'fas fa-solid fa-circle-xmark  ': !isLengthValid(),
-                      'fas fa-check-circle': isLengthValid(),
-                    }"
-                ></i>
-                <span class="strong-password-error-text"
-                  >minimum 8 characters</span
-                >
-              </div>
-            </div>
 
             <!-- confirm password -->
             <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block"

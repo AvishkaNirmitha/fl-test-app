@@ -5,7 +5,6 @@ import {
   MAT_DIALOG_DATA,
   MatDialog,
 } from "@angular/material/dialog";
-import { Subscription } from "rxjs";
 import { GlobalService } from "src/app/services/global.service";
 import { JwtTokenValidatorService } from "src/app/services/jwt-token-validator.service";
 import { MsgHandelService } from "src/app/services/msg-handel.service";
@@ -14,17 +13,21 @@ import { removeWhiteSpaces } from "src/app/services/validations/validator";
 import { WalletService } from "src/app/services/wallet.service";
 import { ConfirmDialogComponent } from "src/app/shared/confirm-dialog/confirm-dialog.component";
 import { environment } from "src/environments/environment";
+import { WithdrawModelComponent } from "../../wallet/withdraw-model/withdraw-model.component";
+import { MoviePaymentModelComponent } from "../movie-payment-model/movie-payment-model.component";
 
 @Component({
-  selector: "app-withdraw-model",
-  templateUrl: "./withdraw-model.component.html",
-  styleUrls: ["./withdraw-model.component.scss"],
+  selector: "app-movie-booking-model",
+  templateUrl: "./movie-booking-model.component.html",
+  styleUrls: ["./movie-booking-model.component.scss"],
 })
-export class WithdrawModelComponent implements OnInit, OnDestroy {
+export class MovieBookingModelComponent implements OnInit, OnDestroy {
   loading: Boolean = false;
-  verfication_code_sent: boolean = false;
-  verificationResponse: Object = {};
-  service_fee = environment.service_fee_percentage;
+
+  ticketPrice = {
+    halfTicketPrice: 150,
+    fullTicketPrice: 300,
+  };
 
   rForm: FormGroup;
 
@@ -41,16 +44,7 @@ export class WithdrawModelComponent implements OnInit, OnDestroy {
     public dialog: MatDialog
   ) {
     this.rForm = this._FormBuilder.group({
-      withdraw_address: [
-        null,
-        Validators.compose([
-          removeWhiteSpaces,
-          Validators.required,
-          Validators.minLength(42),
-          Validators.maxLength(42),
-        ]),
-      ],
-      amount: [
+      fullSeatCount: [
         null,
         Validators.compose([
           Validators.required,
@@ -58,7 +52,7 @@ export class WithdrawModelComponent implements OnInit, OnDestroy {
           Validators.max(100),
         ]),
       ],
-      seatCount: [
+      HalfSeatCount: [
         null,
         Validators.compose([
           Validators.required,
@@ -68,23 +62,6 @@ export class WithdrawModelComponent implements OnInit, OnDestroy {
       ],
 
       bookDate: [null, Validators.required],
-
-      // verification_code: [
-      //   null,
-      //   Validators.compose([
-      //     Validators.required,
-      //     Validators.minLength(6),
-      //     Validators.maxLength(6),
-      //   ]),
-      // ],
-      twoFa_auth_code: [
-        null,
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(6),
-          Validators.maxLength(6),
-        ]),
-      ],
     });
   }
 
@@ -95,6 +72,10 @@ export class WithdrawModelComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {}
 
   handleWithdraw() {
+    this.openCardPayment();
+
+    return;
+
     this.loading = true;
     this.walletService
       .createWithdrawalRequest({
@@ -102,9 +83,6 @@ export class WithdrawModelComponent implements OnInit, OnDestroy {
         // address: this.rForm.value?.withdraw_address,
         // amount: this.rForm.value?.amount,
         // verification_code: this.rForm.value?.twoFa_auth_code,
-        xrt_amount: this.rForm.value?.amount,
-        address: this.rForm.value?.withdraw_address,
-        authCode: this.rForm.value?.twoFa_auth_code,
       })
       .subscribe(
         (response) => {
@@ -146,10 +124,35 @@ export class WithdrawModelComponent implements OnInit, OnDestroy {
     });
   }
 
-  goToProfilePage() {
-    this.dialogRef.close({
-      status: true,
-      navigate_to_profile_page: true,
+  calTotal() {
+    const fullSeats = this.rForm.value?.fullSeatCount
+      ? this.rForm.value?.fullSeatCount
+      : 0;
+    const halfSeats = this.rForm.value?.HalfSeatCount
+      ? this.rForm.value?.HalfSeatCount
+      : 0;
+    return (
+      fullSeats * this.ticketPrice.fullTicketPrice +
+      halfSeats * this.ticketPrice.halfTicketPrice
+    );
+  }
+
+  openCardPayment() {
+    const dialogRef = this.dialog.open(MoviePaymentModelComponent, {
+      width: "45vw",
+      maxHeight: "85vh",
+      autoFocus: false,
+      disableClose: true,
+      data: {
+        userDetails: {},
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result != undefined) {
+        if (result.status) {
+        }
+      }
     });
   }
 }

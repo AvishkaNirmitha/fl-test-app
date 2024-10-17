@@ -1,0 +1,137 @@
+<div class="display-flex mb-3 mr-4 mt-3">
+  <i
+    class="fa fa-times ml-auto font-1-4 cursor-pointer"
+    aria-hidden="true"
+    data-toggle="tooltip"
+    data-placement="top"
+    title="Close"
+    (click)="closeModel()"
+  ></i>
+</div>
+<h1 class="font-1-6 header-title text-center mb-4">Payment Details</h1>
+
+<div class="font-1 mb-4 pl-4 pr-4">
+  <div class="row">
+    <div class="col-5">
+      <img src="assets/images/card-img.png" class="w-100" alt="" />
+    </div>
+
+    <div class="col-7">
+      <div class="form-wrapper">
+        <form role="form" [formGroup]="rForm">
+          <div class="">
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <input
+                matInput
+                placeholder="Enter card number"
+                type="text"
+                formControlName="cardNumber"
+              />
+
+              <mat-error
+                *ngIf="
+                       !rForm.controls['cardNumber'].valid &&
+                        (rForm.controls['cardNumber']?.errors?.['maxlength'] ||
+                        rForm.controls['cardNumber']?.errors?.['minlength']) &&
+                        rForm.controls['cardNumber']?.touched
+                    "
+                >Valid card number is required</mat-error
+              >
+            </mat-form-field>
+          </div>
+
+          <div class="">
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <input
+                matInput
+                placeholder="Enter card holder name"
+                type="text"
+                formControlName="cardHolderName"
+              />
+
+              <mat-error
+                *ngIf="
+                       !rForm.controls['cardHolderName'].valid &&
+                        (rForm.controls['cardHolderName']?.errors?.['maxlength'] ||
+                        rForm.controls['cardHolderName']?.errors?.['minlength']) &&
+                        rForm.controls['cardHolderName']?.touched
+                    "
+                >Valid card holder name is required</mat-error
+              >
+            </mat-form-field>
+          </div>
+
+          <div class="row">
+            <div class="col-4 pr-0">
+              <div class="">
+                <mat-form-field
+                  appearance="outline"
+                  class="w-100"
+                  color="primary"
+                >
+                  <input
+                    matInput
+                    placeholder="MM"
+                    type="text"
+                    formControlName="cardMonth"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-4 pr-0">
+              <div class="">
+                <mat-form-field
+                  appearance="outline"
+                  class="w-100"
+                  color="primary"
+                >
+                  <input
+                    matInput
+                    placeholder="YYYY"
+                    type="text"
+                    formControlName="cardYear"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="">
+                <mat-form-field
+                  appearance="outline"
+                  class="w-100"
+                  color="primary"
+                >
+                  <input
+                    matInput
+                    placeholder="CVC"
+                    type="text"
+                    formControlName="cardCvc"
+                  />
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <hr />
+
+          <button
+            type="submit"
+            mat-flat-button
+            color="primary"
+            class="w-100"
+            (click)="handleWithdraw()"
+            [disabled]="!rForm.valid"
+          >
+            proceed to checkout
+          </button>
+        </form>
+      </div>
+
+      <div class="d-flex justify-content-center mt-2">
+        <img src="assets/images/card-providers.png" class="col-5" alt="" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-loader *ngIf="loading"></app-loader>

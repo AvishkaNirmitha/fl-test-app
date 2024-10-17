@@ -5,26 +5,27 @@ import {
   MAT_DIALOG_DATA,
   MatDialog,
 } from "@angular/material/dialog";
-import { Subscription } from "rxjs";
 import { GlobalService } from "src/app/services/global.service";
 import { JwtTokenValidatorService } from "src/app/services/jwt-token-validator.service";
 import { MsgHandelService } from "src/app/services/msg-handel.service";
 import { UserService } from "src/app/services/user.service";
-import { removeWhiteSpaces } from "src/app/services/validations/validator";
 import { WalletService } from "src/app/services/wallet.service";
 import { ConfirmDialogComponent } from "src/app/shared/confirm-dialog/confirm-dialog.component";
-import { environment } from "src/environments/environment";
+import { WithdrawModelComponent } from "../../wallet/withdraw-model/withdraw-model.component";
+import { removeWhiteSpaces } from "src/app/services/validations/validator";
 
 @Component({
-  selector: "app-withdraw-model",
-  templateUrl: "./withdraw-model.component.html",
-  styleUrls: ["./withdraw-model.component.scss"],
+  selector: "app-movie-payment-model",
+  templateUrl: "./movie-payment-model.component.html",
+  styleUrls: ["./movie-payment-model.component.scss"],
 })
-export class WithdrawModelComponent implements OnInit, OnDestroy {
+export class MoviePaymentModelComponent implements OnInit, OnDestroy {
   loading: Boolean = false;
-  verfication_code_sent: boolean = false;
-  verificationResponse: Object = {};
-  service_fee = environment.service_fee_percentage;
+
+  ticketPrice = {
+    halfTicketPrice: 150,
+    fullTicketPrice: 300,
+  };
 
   rForm: FormGroup;
 
@@ -41,50 +42,72 @@ export class WithdrawModelComponent implements OnInit, OnDestroy {
     public dialog: MatDialog
   ) {
     this.rForm = this._FormBuilder.group({
-      withdraw_address: [
+      cardNumber: [
         null,
         Validators.compose([
           removeWhiteSpaces,
           Validators.required,
-          Validators.minLength(42),
-          Validators.maxLength(42),
+          Validators.minLength(5),
+          Validators.maxLength(5),
         ]),
       ],
-      amount: [
+      cardHolderName: [
         null,
         Validators.compose([
+          removeWhiteSpaces,
           Validators.required,
-          Validators.min(1),
-          Validators.max(100),
+          Validators.minLength(5),
+          Validators.maxLength(5),
         ]),
       ],
-      seatCount: [
+      cardMonth: [
         null,
         Validators.compose([
+          removeWhiteSpaces,
           Validators.required,
-          Validators.min(1),
-          Validators.max(100),
+          Validators.minLength(5),
+          Validators.maxLength(5),
+        ]),
+      ],
+      cardYear: [
+        null,
+        Validators.compose([
+          removeWhiteSpaces,
+          Validators.required,
+          Validators.minLength(5),
+          Validators.maxLength(5),
+        ]),
+      ],
+      cardCvc: [
+        null,
+        Validators.compose([
+          removeWhiteSpaces,
+          Validators.required,
+          Validators.minLength(5),
+          Validators.maxLength(5),
         ]),
       ],
 
-      bookDate: [null, Validators.required],
+      // cardNumber: [
+      //   null,
+      //   Validators.compose([
+      //     removeWhiteSpaces,
+      //     Validators.required,
+      //     Validators.minLength(42),
+      //     Validators.maxLength(42),
+      //   ]),
+      // ],
 
-      // verification_code: [
+      // HalfSeatCount: [
       //   null,
       //   Validators.compose([
       //     Validators.required,
-      //     Validators.minLength(6),
-      //     Validators.maxLength(6),
+      //     Validators.min(1),
+      //     Validators.max(100),
       //   ]),
       // ],
-      twoFa_auth_code: [
-        null,
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(6),
-          Validators.maxLength(6),
-        ]),
-      ],
+
+      // bookDate: [null, Validators.required],
     });
   }
 
@@ -102,9 +125,6 @@ export class WithdrawModelComponent implements OnInit, OnDestroy {
         // address: this.rForm.value?.withdraw_address,
         // amount: this.rForm.value?.amount,
         // verification_code: this.rForm.value?.twoFa_auth_code,
-        xrt_amount: this.rForm.value?.amount,
-        address: this.rForm.value?.withdraw_address,
-        authCode: this.rForm.value?.twoFa_auth_code,
       })
       .subscribe(
         (response) => {
@@ -146,10 +166,16 @@ export class WithdrawModelComponent implements OnInit, OnDestroy {
     });
   }
 
-  goToProfilePage() {
-    this.dialogRef.close({
-      status: true,
-      navigate_to_profile_page: true,
-    });
+  calTotal() {
+    // const fullSeats = this.rForm.value?.fullSeatCount
+    //   ? this.rForm.value?.fullSeatCount
+    //   : 0;
+    // const halfSeats = this.rForm.value?.HalfSeatCount
+    //   ? this.rForm.value?.HalfSeatCount
+    //   : 0;
+    // return (
+    //   fullSeats * this.ticketPrice.fullTicketPrice +
+    //   halfSeats * this.ticketPrice.halfTicketPrice
+    // );
   }
 }

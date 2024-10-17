@@ -1,0 +1,49 @@
+<div class="pt-3 pb-3">
+  <div class="display-flex mb-3 mr-4 mt-3">
+    <i
+      class="fa fa-times ml-auto font-1-4 cursor-pointer"
+      aria-hidden="true"
+      data-toggle="tooltip"
+      data-placement="top"
+      title="Close"
+      (click)="closeModel()"
+    ></i>
+  </div>
+  <h1 class="font-1-6 header-title text-center mb-4">{{ parentData?.name }}</h1>
+
+  <div class="font-1 mb-4 pl-4 pr-4">
+    <div class="form-wrapper">
+      <div class="row">
+        <div class="col-9 mb-2">ROI (%)</div>
+        <div class="col-3">
+          <ng-container *ngIf="parentData?.roi">
+            {{ parentData?.roi | number : "1.2-2" }}%
+          </ng-container>
+          <ng-container *ngIf="!parentData?.roi">
+            <div class="text-center">-</div>
+          </ng-container>
+        </div>
+
+        <div class="col-9 mb-2">Daily Investment Return (%)</div>
+        <div class="col-3">
+          <ng-container *ngIf="parentData?.daily_investment_return_showoff">
+            {{ parentData?.daily_investment_return_showoff }}
+          </ng-container>
+          <ng-container *ngIf="!parentData?.daily_investment_return_showoff">
+            <div class="text-center">-</div>
+          </ng-container>
+        </div>
+
+        <div class="col-9 mb-2">Withdrawal Limit</div>
+        <div class="col-3">
+          <ng-container *ngIf="parentData?.withdrawal_limit">
+            {{ parentData?.withdrawal_limit | number : "1.2-2" }}
+          </ng-container>
+          <ng-container *ngIf="!parentData?.withdrawal_limit">
+            <div class="text-center">-</div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

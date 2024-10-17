@@ -1,0 +1,25 @@
+<main class="main-wrapper">
+    <section class="mt-2 admin-wrapper mt-5">
+      <div class="home display-flex m-auto flex-column">
+        <div
+          class="display-4 font-weight-400 text-center mt-4"
+          *ngIf="!displayError['status']"
+        >
+          Verifying...
+        </div>
+      </div>
+  
+      <div class="access-denied-comp" *ngIf="displayError['status'] == true">
+        <img src="assets/images/svgs/cant-access.svg" class="access-denied-img" />
+        <div class="display-4 font-weight-400 text-center mt-4">
+          Access Denied
+        </div>
+      </div>
+    </section>
+  </main>
+  
+  <div class="overlay" *ngIf="loading">
+    <div class="overlay__inner">
+      <div class="overlay__content"><span class="loader"></span></div>
+    </div>
+  </div>

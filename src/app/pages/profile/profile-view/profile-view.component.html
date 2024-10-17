@@ -1,0 +1,394 @@
+<mat-card class="cardWithShadow">
+  <mat-card-content>
+    <div class="main">
+      <mat-card-title class="font-1-7 mat-mdc-card-title text-center">
+        Profile - KYC
+      </mat-card-title>
+
+      <div class="container" *ngIf="true">
+        <div class="row">
+          <div class="col-lg-12 mt-3 mb-3" *ngIf="true">
+            <div class="container">
+              <h6 class="mat-headline-6">Personal Information</h6>
+
+              <form role="form " class="m-t-30 row" [formGroup]="rForm">
+                <div class="col-12">
+                  <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">Legal Name As Shown In ID<span
+                      class="required-icon">*</span>
+                  </mat-label>
+                </div>
+
+                <div class="col-sm-12 col-md-6 mb-2">
+                  <mat-form-field appearance="outline" class="w-100" color="primary">
+                    <input matInput placeholder="Enter First Name" type="text" formControlName="first_name" />
+
+                    <mat-error *ngIf="
+                    rForm.controls['first_name']?.errors?.['required'] &&
+                  rForm.controls['first_name']?.touched
+                  ">First Name is required</mat-error>
+                    <mat-error *ngIf="
+                 (rForm.controls['first_name']?.errors?.['minlength'] ||
+                    rForm.controls['first_name']?.errors?.['maxlength']) &&
+                  rForm.controls['first_name']?.touched
+                  ">
+                      First Name should be 1 to 50 characters length</mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-sm-12 col-md-6 mb-2">
+                  <mat-form-field appearance="outline" class="w-100" color="primary">
+                    <input matInput placeholder="Enter Surname" type="text" formControlName="surname" />
+
+                    <mat-error *ngIf="
+                   rForm.controls['surname']?.errors?.['required'] &&
+                  rForm.controls['surname']?.touched
+                  ">surname is required</mat-error>
+                    <mat-error *ngIf="
+                (rForm.controls['surname']?.errors?.['minlength'] ||
+                    rForm.controls['surname']?.errors?.['maxlength']) &&
+                  rForm.controls['surname']?.touched
+                  ">
+                      surname should be 1 to 50 characters length</mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-sm-12 col-md-6">
+                  <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">
+                    Date of Birth<span class="required-icon">*</span>
+                  </mat-label>
+                  <mat-form-field appearance="outline" class="w-100" color="primary">
+                    <input matInput [matDatepicker]="picker" placeholder="Enter Date of Birth"
+                      formControlName="date_of_birth" />
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+
+                    <mat-error
+                      *ngIf="rForm.get('date_of_birth')?.errors?.['required'] && rForm.get('date_of_birth')?.touched">
+                      Date of birth is required
+                    </mat-error>
+                    <mat-error
+                      *ngIf="rForm.get('date_of_birth')?.errors?.['invalidDateRange'] && rForm.get('date_of_birth')?.touched">
+                      Invalid date of birth
+                    </mat-error>
+                    <mat-error
+                      *ngIf="rForm.get('date_of_birth')?.errors?.['elderlyDate'] && rForm.get('date_of_birth')?.touched">
+                      You must be older than 18 years
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-sm-12 col-md-6">
+                  <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">
+                    Mobile No<span class="required-icon">*</span>
+                  </mat-label>
+                  <mat-form-field appearance="outline" class="w-100" color="primary">
+                    <input matInput placeholder="Enter mobile number" type="number" formControlName="mobile_number" />
+
+                    <mat-error *ngIf="
+                        !rForm.controls['mobile_number']?.valid &&
+                        rForm.controls['mobile_number']?.touched
+                      ">
+                      valid mobile No is required</mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-sm-12 col-md-6">
+                  <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">
+                    Address<span class="required-icon">*</span>
+                  </mat-label>
+                  <mat-form-field appearance="outline" class="w-100" color="primary">
+                    <input matInput placeholder="Enter Address" type="text" formControlName="address"
+                      autocomplete="new-password" />
+
+                    <mat-error *ngIf="
+            rForm.controls['address']?.errors?.['required'] &&
+            rForm.controls['address']?.touched
+                  ">
+                      address is required</mat-error>
+                    <mat-error *ngIf="
+                   (rForm.controls['address']?.errors?.['minlength'] ||
+                   rForm.controls['address']?.errors?.['maxlength']) &&
+                   rForm.controls['address']?.touched
+                  ">
+                      address should be 1 to 50 characters length
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                  <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">
+                    Country<span class="required-icon">*</span>
+                  </mat-label>
+                  <mat-form-field appearance="outline" class="w-100" color="primary">
+                    <input matInput placeholder="Enter country" type="text" formControlName="country"
+                      autocomplete="new-password" />
+
+                    <mat-error *ngIf="
+            rForm.controls['country']?.errors?.['required'] &&
+            rForm.controls['country']?.touched
+                  ">
+                      country is required</mat-error>
+                    <mat-error *ngIf="
+                   (rForm.controls['country']?.errors?.['minlength'] ||
+                   rForm.controls['country']?.errors?.['maxlength']) &&
+                   rForm.controls['country']?.touched
+                  ">
+                      country should be 1 to 15 characters length
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                  <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">
+                    City<span class="required-icon">*</span>
+                  </mat-label>
+                  <mat-form-field appearance="outline" class="w-100" color="primary">
+                    <input matInput placeholder="Enter city" type="text" formControlName="city"
+                      autocomplete="new-password" />
+
+                    <mat-error *ngIf="
+            rForm.controls['city']?.errors?.['required'] &&
+            rForm.controls['city']?.touched
+                  ">
+                      city is required</mat-error>
+                    <mat-error *ngIf="
+                   (rForm.controls['city']?.errors?.['minlength'] ||
+                   rForm.controls['city']?.errors?.['maxlength']) &&
+                   rForm.controls['city']?.touched
+                  ">
+                      city should be 1 to 15 characters length
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-sm-12 col-md-6">
+                  <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">
+                    State Province<span class="required-icon">*</span>
+                  </mat-label>
+                  <mat-form-field appearance="outline" class="w-100" color="primary">
+                    <input matInput placeholder="Enter state province" type="text" formControlName="state_province"
+                      autocomplete="new-password" />
+
+                    <mat-error *ngIf="
+            rForm.controls['state_province']?.errors?.['required'] &&
+            rForm.controls['state_province']?.touched
+                  ">
+                      state province is required</mat-error>
+                    <mat-error *ngIf="
+                   (rForm.controls['state_province']?.errors?.['minlength'] ||
+                   rForm.controls['state_province']?.errors?.['maxlength']) &&
+                   rForm.controls['state_province']?.touched
+                  ">
+                      state province should be 1 to 15 characters length
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-sm-12 col-md-6">
+                  <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">
+                    Zip postal code<span class="required-icon">*</span>
+                  </mat-label>
+                  <mat-form-field appearance="outline" class="w-100" color="primary">
+                    <input matInput placeholder="Enter zip postal code" type="text" formControlName="zip_postal_code"
+                      autocomplete="new-password" />
+
+                    <mat-error *ngIf="
+            rForm.controls['zip_postal_code']?.errors?.['required'] &&
+            rForm.controls['zip_postal_code']?.touched
+                  ">
+                      zip postal code is required</mat-error>
+                    <mat-error *ngIf="
+                   (rForm.controls['zip_postal_code']?.errors?.['minlength'] ||
+                   rForm.controls['zip_postal_code']?.errors?.['maxlength']) &&
+                   rForm.controls['zip_postal_code']?.touched
+                  ">
+                      ZIP codes can only be 7 characters long
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-sm-12 col-md-6">
+                  <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">
+                    Photo ID / License / Passport Number<span class="required-icon">*</span>
+                  </mat-label>
+                  <mat-form-field appearance="outline" class="w-100" color="primary">
+                    <input matInput placeholder="Enter Photo ID / License / Passport Number" type="text"
+                      formControlName="photo_id_number" />
+
+                    <mat-error *ngIf="
+                   rForm.controls['photo_id_number']?.errors?.['required'] &&
+                  rForm.controls['photo_id_number']?.touched
+                  ">
+                      Photo ID / License / Passport Number is required</mat-error>
+                    <mat-error *ngIf="
+                (rForm.controls['photo_id_number']?.errors?.['minlength'] ||
+                    rForm.controls['photo_id_number']?.errors?.['maxlength']) &&
+                  rForm.controls['photo_id_number']?.touched
+                  ">
+                      Photo ID / License / Passport Number should be 1 to 60 characters length</mat-error>
+                  </mat-form-field>
+                </div>
+
+                <div class="col-sm-12" style="margin-bottom: 10px;">
+                  <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">
+                    ID Type <span class="required-icon">*</span>
+                  </mat-label>
+                  <mat-radio-group aria-label="Select an option" name="opList" (change)="radioChange($event)">
+                    <mat-radio-button *ngFor="let op of photoTypes" [checked]="op.isChecked" name="opList"
+                      color="primary" [value]="op.value">{{op.name}}</mat-radio-button>
+                  </mat-radio-group>
+                </div>
+
+                <div class="col-sm-12 col-md-6">
+                  <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">
+                    <ng-container *ngIf="selectedPhotoType.value != 'Passport'">{{selectedPhotoType.name}} Front
+                      Side</ng-container>
+                    <ng-container *ngIf="selectedPhotoType.value == 'Passport'">Passport Details Page
+                      Image</ng-container>
+                    <span class="required-icon">*</span>
+                  </mat-label>
+
+                  <div class="">
+                    <input type="file" style="display: none" (change)="onFileSelected($event)" #fileInput
+                      accept="image/x-png,image/gif,image/jpeg" />
+
+                    <button mat-flat-button color="primary"
+                      class="mat-primary mdc-button mdc-button--unelevated mr-2 pl-4 pr-4 font-0-8-5" type="button"
+                      (click)="fileInput.click()" *ngIf="!frontNIC">
+                      <span class="btn-inner--icon"><i class="fas fa-portrait font-1 mr-2"></i>
+                      </span>
+                      Select {{selectedPhotoType.name}} Front Side
+                    </button>
+
+                    <div class="">
+                      <div class="col-4" style="margin-bottom: 10px">
+                        <div align="right" *ngIf="frontNIC">
+                          <button class="border-radius-default btn btn-2 btn-icon btn-outline-info btn-sm pt-1"
+                            type="button" (click)="removeImage(0)" data-toggle="tooltip" data-placement="top"
+                            title="Remove image">
+                            <span class="btn-inner--icon">
+                              <i class="fa fa-times" aria-hidden="true"></i>
+
+                              <!-- <i class="ni ni-fat-remove"></i -->
+                            </span>
+                          </button>
+                        </div>
+                        <div align="center">
+                          <img [src]="frontNIC" width="100%" class="uploaded-img"
+                            style="margin-left: 1%; margin-top: 2%" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-sm-12 col-md-6" *ngIf="selectedPhotoType.value != 'Passport'">
+                  <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">
+                    {{selectedPhotoType.name}} Back Side <span class="required-icon">*</span>
+                  </mat-label>
+
+                  <div class="">
+                    <input type="file" style="display: none" (change)="onFileSelected($event, false)" #backNicInput
+                      accept="image/x-png,image/gif,image/jpeg" />
+
+                    <button mat-flat-button color="primary"
+                      class="mat-primary mdc-button mdc-button--unelevated mr-2 pl-4 pr-4 font-0-8-5" type="button"
+                      (click)="backNicInput.click()" *ngIf="!backNIC">
+                      <span class="btn-inner--icon"><i class="fas fa-portrait font-1 mr-2"></i>
+                      </span>
+                      Select {{selectedPhotoType.name}} Back Side
+                    </button>
+
+                    <div class="">
+                      <div class="col-4" style="margin-bottom: 10px">
+                        <div align="right" *ngIf="backNIC">
+                          <button class="border-radius-default btn btn-2 btn-icon btn-outline-info btn-sm pt-1"
+                            type="button" (click)="removeImage(0, false)" data-toggle="tooltip" data-placement="top"
+                            title="Remove image">
+                            <span class="btn-inner--icon">
+                              <i class="fa fa-times" aria-hidden="true"></i>
+                            </span>
+                          </button>
+                        </div>
+                        <div align="center">
+                          <img [src]="backNIC" class="uploaded-img" width="100%"
+                            style="margin-left: 1%; margin-top: 2%" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- input -->
+              </form>
+              <div role="form " class="m-t-30 row">
+                <div class="col-12 d-flex align-items-center mb-4">
+                  <div class="f-s-14 f-w-600 d-block">
+                    Two Factor Authentication
+                  </div>
+                  <div class="d-flex align-items-center justify-content-center ml-4">
+                    <mat-slide-toggle data-toggle="tooltip" data-placement="top" title="{{
+                        !two_factor_auth_enabled ? 'Enable' : 'Disable'
+                      }} two factor auth" class="mr-3 tfa-toggle" (toggleChange)="toggle2FA()"
+                      [(ngModel)]="two_factor_auth_enabled">
+                    </mat-slide-toggle>
+                  </div>
+                </div>
+
+                <div class="w-100 col-12" *ngIf="!showSaveBtn()">
+                  <div class="d-flex align-items-center text-primary font-weight-500">
+                    <i class="fa-check fas text-primary ml-auto"></i>
+                    <span class="ml-2"> KYC approved </span>
+                  </div>
+                </div>
+
+                <div class="font-0-9 mt-3 ng-star-inserted text-gray-100 col-12 font-weight-bold"
+                  *ngIf="showWaitingStatus()">
+                  <img class="spinner-img" alt="" src="../../../../assets/images/spinner.gif" />
+
+                  Waiting for Approval...
+                </div>
+
+                <div class="col-12">
+                  <div class="text-right w-100">
+                    <button type="button" mat-flat-button color="primary"
+                      class="mat-primary mdc-button mdc-button--unelevated mr-2 pl-4 pr-4" (click)="requestKYC()"
+                      *ngIf="validateKycBtn()">
+                      <span class="d-flex align-items-center">
+                        <i class="fa-address-card fa-solid font-1-1 mr-1"></i>
+
+                        <span> Request KYC Verification </span>
+                      </span>
+                    </button>
+                    <button
+                      *ngIf="
+                        showSaveBtn() &&
+                        this.userDetails?.kyc_approval_status != 'pending'
+                      "
+                      [disabled]="this.rForm.invalid"
+                      mat-flat-button
+                      color="primary"
+                      class="mat-primary mdc-button mdc-button--unelevated mr-2 pl-4 pr-4"
+                      (click)="uploadImages()"
+                    >
+                      <span class="d-flex align-items-center">
+                        <i class="fa-solid fa-cloud-arrow-up font-1-1 mr-1"></i>
+
+                        <span> Save </span>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="text-red col-12 font-weight-600" *ngIf="showRejectedReason()">
+                  *Your KYC approval request was rejected because
+                  {{userDetails?.['kyc_rejected_reason']}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<app-loader *ngIf="loading"></app-loader>

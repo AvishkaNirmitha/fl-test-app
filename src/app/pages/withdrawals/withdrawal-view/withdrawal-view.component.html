@@ -1,0 +1,258 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="row">
+      <div class="row col-12 d-flex m-0">
+        <div class="col-lg-12 mt-30" *ngIf="true">
+          <mat-card class="cardWithShadow">
+            <mat-card-content class="p-24">
+              <div class="">
+                <div class="row">
+                  <div class="col-7">
+                    <mat-card-title>withdrawals</mat-card-title>
+                  </div>
+                  <div class="col-5">
+                    <p style="float: right">Total : {{ totalItems }}</p>
+                  </div>
+                </div>
+                <form
+                  role="form"
+                  [formGroup]="queryForm"
+                  (ngSubmit)="search()"
+                  class="mt-3"
+                >
+                  <div class="row">
+                    <div
+                      class="display-flex align-items-center justify-content-center w-100"
+                    >
+                      <!-- Search bar -->
+                      <div class="col col-lg-5">
+                        <div class="form-group mb-0">
+                          <input
+                            class="form-control form-control-alternative pb-2 pt-2 font-0-9"
+                            placeholder="Search..."
+                            type="text"
+                            formControlName="query"
+                          />
+                        </div>
+                      </div>
+
+                      <!-- buttons -->
+                      <div class="">
+                        <button
+                          class="animated btn-primary main-btn mr-2 wow wow-btn-normal"
+                          type="submit"
+                          [disabled]="!queryForm.valid || loading"
+                        >
+                          <span class="align-items-center d-flex"
+                            ><i class="fas fa-search font-0-9-5"></i>
+                            <div class="ml-2 font-0-8-5 display-none d-sm-flex">
+                              Search
+                            </div>
+                          </span>
+                        </button>
+
+                        <button
+                          class="animated btn-primary main-btn mr-2 wow wow-btn-normal"
+                          (click)="reset()"
+                        >
+                          <span class="align-items-center d-flex"
+                            ><i class="fas fa-sync-alt font-0-9-5"></i>
+                            <div class="ml-2 font-0-8-5 display-none d-sm-flex">
+                              &nbsp;&nbsp;Reset
+                            </div>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+              <div class="table-responsive mt-4" *ngIf="dataList?.length">
+                <table class="w-100 table-borderless mt-3">
+                  <thead>
+                    <tr>
+                      <!-- Header columns -->
+                      <th class="mat-subtitle-1">Date</th>
+                      <th class="mat-subtitle-1">Amount(TEX)</th>
+                      <th class="mat-subtitle-1">Amount(USDT)</th>
+                      <th class="mat-subtitle-1">Service Fee(USDT)</th>
+                      <th class="mat-subtitle-1">To address</th>
+                      <th class="mat-subtitle-1">Status</th>
+                      <!-- <th class="mat-subtitle-1">service fee</th> -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Table data -->
+                    <tr
+                      *ngFor="
+                        let element of dataList
+                          | paginate
+                            : {
+                                itemsPerPage: perPage,
+                                currentPage: pageNo,
+                                totalItems: totalItems
+                              }
+                      "
+                    >
+                      <!-- Joined Date -->
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <div class="">
+                            <h6 class="mat-subtitle-1 f-s-14 f-w-700">
+                              {{
+                                element?.created_at | date : "dd/MM/yy HH:mm:ss"
+                              }}
+                            </h6>
+                          </div>
+                        </div>
+                      </td>
+
+                      <!-- <td>
+                        <h6 class="mat-subtitle-1 f-s-14 f-w-700">
+                          <span
+                            class="cursor-pointer"
+                            *ngIf="element?.package?.name"
+                          >
+                            {{ element?.package?.name }}
+                          </span>
+                          <ng-container *ngIf="!element?.package?.name">
+                            -
+                          </ng-container>
+                        </h6>
+                      </td> -->
+                      <td>
+                        <h6 class="mat-subtitle-1 f-s-14 f-w-700">
+                          <span
+                            class="cursor-pointer"
+                            *ngIf="element?.xrt_amount"
+                          >
+                            {{
+                              element?.xrt_amount
+                                | currency : " " : "symbol" : "1.2-2"
+                            }}
+                          </span>
+                          <ng-container *ngIf="!element?.xrt_amount">
+                            -
+                          </ng-container>
+                        </h6>
+                      </td>
+                      <td>
+                        <h6 class="mat-subtitle-1 f-s-14 f-w-700">
+                          <span
+                            class="cursor-pointer"
+                            *ngIf="element?.usdt_amount"
+                          >
+                            {{
+                              element?.usdt_amount
+                                | currency : " " : "symbol" : "1.2-2"
+                            }}
+                          </span>
+                          <ng-container *ngIf="!element?.usdt_amount">
+                            -
+                          </ng-container>
+                        </h6>
+                      </td>
+                      <td>
+                        <h6 class="mat-subtitle-1 f-s-14 f-w-700">
+                          <span
+                            class="cursor-pointer"
+                            *ngIf="element?.service_charge"
+                          >
+                            {{
+                              element?.service_charge
+                                | currency : " " : "symbol" : "1.2-2"
+                            }}
+                          </span>
+                          <ng-container *ngIf="!element?.service_charge">
+                            -
+                          </ng-container>
+                        </h6>
+                      </td>
+                      <td>
+                        <h6 class="mat-subtitle-1 f-s-14 f-w-700">
+                          <span
+                            class="cursor-pointer"
+                            *ngIf="element?.address"
+                            (click)="
+                              copyToClipBoard(
+                                element?.address,
+                                'to address copied to clipboard'
+                              )
+                            "
+                          >
+                            {{ element?.address | truncateText : 16 }}
+                          </span>
+                          <ng-container *ngIf="!element?.address">
+                            -
+                          </ng-container>
+                        </h6>
+                      </td>
+
+                      <td>
+                        <h6 class="mat-subtitle-1 f-s-14 f-w-700">
+                          <span class="cursor-pointer">
+                            <span
+                              *ngIf="element?.status == 'pending'"
+                              class="bg-light-primary text-primary f-w-600 pl-3 pr-3 rounded font-0-8"
+                            >
+                              {{ "Pending" }}
+                            </span>
+                            <span
+                              *ngIf="element?.status == 'rejected'"
+                              class="bg-light-error f-w-600 pl-3 pr-3 rounded text-error font-0-8"
+                            >
+                              {{ "Rejected" }}
+                            </span>
+                            <span
+                              *ngIf="element?.status == 'approved'"
+                              class="bg-light-success f-w-600 pl-3 pr-3 rounded text-success font-0-8"
+                            >
+                              {{ "Accepted" }}
+                            </span>
+                            <span
+                            *ngIf="element?.status == 'complete'"
+                            class="bg-light-success f-w-600 pl-3 pr-3 rounded text-success font-0-8"
+                          >
+                            {{ "Completed" }}
+                          </span>
+                          </span>
+                          <!-- <ng-container *ngIf="!element?.invested_xtr_amount">
+                            -
+                          </ng-container> -->
+                        </h6>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="no-data-comp" *ngIf="!dataList?.length">
+                <i
+                  class="fa fa-exclamation-triangle mb-1 font-2-8 text-grey"
+                  aria-hidden="true"
+                ></i>
+                <div class="font-weight-bold text-grey">No Data</div>
+              </div>
+
+              <div
+                class="mt-5 text-right"
+                [ngClass]="{
+                  ' opacity-0 ': !totalItems && !queryForm.get('query')?.value
+                }"
+              >
+                <pagination-controls
+                  class="custom-pagination"
+                  [autoHide]="true"
+                  (pageChange)="onPageChanged($event)"
+                >
+                </pagination-controls>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-loader *ngIf="loading"></app-loader>
+</div>

@@ -1,0 +1,264 @@
+<mat-card class="cardWithShadow">
+  <mat-card-content>
+    <div class="main">
+      <!-- <div class=" font-2-2 font-family-poppins font-weight-200">
+        Wallet
+      </div> -->
+      <mat-card-title class="font-1-7 mat-mdc-card-title">Wallet</mat-card-title>
+
+      <div class="mt-4">
+        <div class="row mt-4">
+          <div class="col-md-6 col-12 m-t-15 ml-0">
+            <mat-card class="cardWithShadow mb-0">
+              <mat-card-content>
+                <mat-card-title class="f-s-14">Available to withdraw
+                </mat-card-title>
+
+                <div class="row mt-1">
+                  <div class="col-12">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <p class="m-0 font-1-9">
+                        {{
+                        walletData["xtr_token_balance"]
+                        | currency : " " : "symbol" : "1.2-2"
+                        }}
+                      </p>
+                      <button mat-fab color="accent" class="shadow-none icon-48">
+                        <i-tabler name="progress-bolt" class="text-white d-flex"></i-tabler>
+                      </button>
+                    </div>
+
+                    <div class="cursor-pointer font-weight-bold get-code-btn mt-2 text-right text-primary"
+                      (click)="openWithdrawModel()">
+                      withdraw
+                    </div>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+          <div class="col-md-6 col-12 m-t-15 ml-0">
+            <mat-card class="cardWithShadow mb-0">
+              <mat-card-content>
+                <mat-card-title class="f-s-14">My TEX Wallet </mat-card-title>
+
+                <div class="row mt-1">
+                  <div class="col-12 mt-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <p class="m-0">USDT Balance :</p>
+                      <p class="m-0 font-1-9">
+                        {{
+                        walletData["balance"]
+                        | currency : " " : "symbol" : "1.2-2"
+                        }}
+                      </p>
+                    </div>
+                  </div>
+                  <div class="col-12 mt-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <p class="m-0">TEX Token Balance :</p>
+                      <p class="m-0 font-1-9">
+                        {{
+                        walletData["xtr_token_balance"]
+                        | currency : " " : "symbol" : "1.2-2"
+                        }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <div class="row mt-4">
+          <div class="col-md-12">
+            <mat-card class="cardWithShadow mb-0">
+              <mat-card-content>
+                <mat-card-title class="f-s-14">Deposit</mat-card-title>
+                <div class="row">
+                  <div class="col-sm-4 col-12">
+                    <div class="qrcodeImage">
+                      <qrcode [qrdata]="walletData['address']" [elementType]="'svg'" [errorCorrectionLevel]="'M'"
+                        [margin]="4" [scale]="1" [title]="'Wallet Address'" [width]="150"></qrcode>
+                    </div>
+                  </div>
+                  <div class="col-12 col-sm-8">
+                    <div class="d-flex flex-column mb-10">
+                      <h6 class="mat-headline-6">Address (Polygon Network)</h6>
+                      <div class="d-flex align-items-center">
+                        <mat-form-field appearance="outline" class="w-100 wallet-address-field ml-2" color="primary">
+                          <input matInput value="wallet address" [readonly]="true" [value]="walletData['address']" />
+                          <i class="fa fa-copy cursor-pointer font-1 pl-2"
+                            (click)="copyToClipBoard(walletData['address'])" aria-hidden="true"></i>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <p class="">
+                      Scan this code with the <b>Binance Mobile App</b> to
+                      Deposit Crypto.
+                    </p>
+                    <div class="font-0-9 font-we mb-2 mt-2 text-grey">
+                      <span class="required-icon">*</span>
+
+                      Please make sure to use "Polygon Main Network" to deposit USDT. We are not responsible for any other network deposits. 
+                    </div>
+
+                    <button class="main-btn wow w-100 mt-10 mb-10 font-0-9-5" (click)="reloadTransaction()">
+                      <span> Sync Transaction </span>
+                    </button>
+                    <span class="pending-deposit-checker" *ngIf="pendingDepositsCount > 0">
+                      <div class="loader2">
+                        ({{ pendingDepositsCount }})
+                      </div>
+                    </span>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+
+        <!-- <div class="row">
+          <div class="row col-12 d-flex m-0 p-0">
+            <div class="col-md-3 col-sm-6 m-t-15 ml-0">
+              <mat-card class="cardWithShadow mb-0">
+                <mat-card-content class="">
+                  <mat-card-title class="f-s-14">Total Earnings</mat-card-title>
+                  <div class="row mt-1">
+                    <div class="col-12">
+                      <div class="d-flex justify-content-between align-items-center small-text">
+                        <p class="m-0">0</p>
+                        <button mat-fab color="accent" class="shadow-none icon-48">
+                          <i-tabler name="users" class="text-white d-flex"></i-tabler>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+            <div class="col-md-3 col-sm-6 m-t-15 ml-0">
+              <mat-card class="cardWithShadow mb-0">
+                <mat-card-content class="">
+                  <mat-card-title class="f-s-14">Referral Reward</mat-card-title>
+                  <div class="row mt-1">
+                    <div class="col-12">
+                      <div class="d-flex justify-content-between align-items-center small-text">
+                        <p class="m-0">0</p>
+                        <button mat-fab color="primary" class="shadow-none icon-48">
+                          <i-tabler name="award" class="text-white d-flex"></i-tabler>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+            <div class="col-md-3 col-sm-6 m-t-15 ml-0">
+              <mat-card class="cardWithShadow mb-0">
+                <mat-card-content class="">
+                  <mat-card-title class="f-s-14">Performance Bonus</mat-card-title>
+                  <div class="row mt-1">
+                    <div class="col-12">
+                      <div class="d-flex justify-content-between align-items-center small-text">
+                        <p class="m-0">$0</p>
+                        <button mat-fab color="warn" class="shadow-none icon-48">
+                          <i-tabler name="cash-banknote" class="text-white d-flex"></i-tabler>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+            <div class="col-md-3 col-sm-6 m-t-15 ml-0">
+              <mat-card class="cardWithShadow mb-0">
+                <mat-card-content class="">
+                  <mat-card-title class="f-s-14">Withdrawn Total</mat-card-title>
+                  <div class="row mt-1">
+                    <div class="col-12">
+                      <div class="d-flex justify-content-between align-items-center small-text">
+                        <p class="m-0 m-0">$0.00</p>
+                        <button mat-fab color="accent" class="shadow-none icon-48">
+                          <i-tabler name="progress-bolt" class="text-white d-flex"></i-tabler>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </div> -->
+
+        <!-- <div class="row">
+          <div class="col-md-6 mt-4">
+            <mat-card class="cardWithShadow mb-0">
+              <mat-card-content>
+                <div class="col-12">
+                  <h6 class="mat-headline-6">Withdrawal</h6>
+                  <div class="col-12 mt-30">
+                    <div class="col-12 d-flex flex-column mb-10">
+                      <mat-label
+                        class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block"
+                        >Wallet Address ( Polygon Matic )</mat-label
+                      >
+                      <div class="d-flex align-items-center">
+                        <mat-form-field
+                          appearance="outline"
+                          class="w-100 wallet-address-field ml-2"
+                          color="primary"
+                        >
+                          <input
+                            matInput
+                            placeholder="Enter Your Wallet Address"
+                          />
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="col-12 d-flex flex-column">
+                      <mat-label
+                        class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block"
+                        >Amount
+                        <span class="f-w-400 small-text-6"
+                          >( 5% Withdrawal Charges Applied )</span
+                        ></mat-label
+                      >
+                      <div class="d-flex align-items-center">
+                        <mat-form-field
+                          appearance="outline"
+                          class="w-100 wallet-address-field ml-2"
+                          color="primary"
+                        >
+                          <input
+                            matInput
+                            placeholder="Enter Your Wallet Address"
+                          />
+                        </mat-form-field>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 d-flex justify-content-center mt-4">
+                  <button
+                    rel="nofollow"
+                    class="main-btn wow w-50 mt-10 mb-10 font-0-9-5"
+                  >
+                    <span> Submit </span>
+                  </button>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div> -->
+      </div>
+
+      <!-- <app-loader *ngIf="loading"></app-loader> -->
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<app-loader *ngIf="loading"></app-loader>

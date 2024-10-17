@@ -1,0 +1,105 @@
+<div class="row">
+    <div class="col-lg-12">
+      <div class="row">
+        <div class="row col-12 d-flex m-0">
+          <div class="col-lg-12 mt-30" *ngIf="true">
+            <mat-card class="cardWithShadow">
+              <mat-card-content class="p-24">
+                <div class="">
+                  <div class="row">
+                    <div class="col-7">
+                      <mat-card-title>Daily Rewards of {{packageName}}</mat-card-title>
+                    </div>
+                    <div class="col-5">
+                      <p style="float: right">Total : {{ totalItems }}</p>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="table-responsive mt-4" *ngIf="dataList?.length">
+                  <table class="w-100 table-borderless mt-3">
+                    <thead>
+                      <tr>
+                        <!-- Header columns -->
+                        <th class="mat-subtitle-1">Date</th>
+                        <th class="mat-subtitle-1">Amount(TEX)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- Table data -->
+                      <tr
+                        *ngFor="
+                          let element of dataList
+                            | paginate
+                              : {
+                                  itemsPerPage: perPage,
+                                  currentPage: pageNo,
+                                  totalItems: totalItems
+                                }
+                        "
+                      >
+                        <!-- Joined Date -->
+                        <td>
+                          <div class="d-flex align-items-center">
+                            <div class="">
+                              <h6 class="mat-subtitle-1 f-s-14 f-w-700">
+                                {{
+                                  element?.created_at | date : "dd/MM/yy HH:mm:ss"
+                                }}
+                              </h6>
+                            </div>
+                          </div>
+                        </td>
+  
+                        <td>
+                          <h6 class="mat-subtitle-1 f-s-14 f-w-700">
+                            <span
+                              class="cursor-pointer"
+                              *ngIf="element?.investment_value_in_xtr"
+                            >
+                              {{
+                                element?.investment_value_in_xtr
+                                  | number : "1.2-2"
+                              }} TEX
+                            </span>
+                            <ng-container *ngIf="!element?.investment_value_in_xtr">
+                              -
+                            </ng-container>
+                          </h6>
+                        </td>
+                        
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+  
+                <div class="no-data-comp" *ngIf="!dataList?.length">
+                  <i
+                    class="fa fa-exclamation-triangle mb-1 font-2-8 text-grey"
+                    aria-hidden="true"
+                  ></i>
+                  <div class="font-weight-bold text-grey">No Data</div>
+                </div>
+  
+                <div
+                  class="mt-5 text-right"
+                  [ngClass]="{
+                    ' opacity-0 ': !totalItems
+                  }"
+                >
+                  <pagination-controls
+                    class="custom-pagination"
+                    [autoHide]="true"
+                    (pageChange)="onPageChanged($event)"
+                  >
+                  </pagination-controls>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-loader *ngIf="loading"></app-loader>
+  </div>
+  

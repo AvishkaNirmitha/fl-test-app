@@ -1,0 +1,262 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="row">
+      <div class="row col-12 d-flex m-0">
+        <div class="col-lg-12 mt-30" *ngIf="true">
+          <mat-card class="cardWithShadow">
+            <mat-card-content class="p-24">
+              <div class="">
+                <div class="row">
+                  <div class="col-7">
+                    <mat-card-title>Your Packages</mat-card-title>
+                  </div>
+                  <!-- <div class="col-5">
+                    <p style="float: right">Total : {{ totalItems }}</p>
+                  </div> -->
+                </div>
+                <!-- <form role="form" [formGroup]="queryForm" (ngSubmit)="search()" class="mt-3">
+                  <div class="row">
+                    <div class="display-flex align-items-center justify-content-center w-100">
+                      <div class="col col-lg-5">
+                        <div class="form-group mb-0">
+                          <input class="form-control form-control-alternative pb-2 pt-2 font-0-9"
+                            placeholder="Search..." type="text" formControlName="query" />
+                        </div>
+                      </div>
+
+                      <div class="">
+                        <button class="animated btn-primary main-btn mr-2 wow wow-btn-normal" type="submit"
+                          [disabled]="!queryForm.valid || loading">
+                          <span class="align-items-center d-flex"><i class="fas fa-search font-0-9-5"></i>
+                            <div class="ml-2 font-0-8-5 display-none d-sm-flex">
+                              Search
+                            </div>
+                          </span>
+                        </button>
+
+                        <button class="animated btn-primary main-btn mr-2 wow wow-btn-normal" (click)="reset()">
+                          <span class="align-items-center d-flex"><i class="fas fa-sync-alt font-0-9-5"></i>
+                            <div class="ml-2 font-0-8-5 display-none d-sm-flex">
+                              &nbsp;&nbsp;Reset
+                            </div>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form> -->
+              </div>
+
+              <div class="table-responsive mt-4" *ngIf="dataList?.length">
+                <table class="w-100 table-borderless mt-3">
+                  <thead>
+                    <tr>
+                      <!-- Header columns -->
+                      <th class="mat-subtitle-1">Date</th>
+                      <th class="mat-subtitle-1">Package</th>
+                      <th class="mat-subtitle-1">Invested</th>
+                      <th class="mat-subtitle-1">ROI%</th>
+                      <th class="mat-subtitle-1">Service Fee</th>
+                      <th class="mat-subtitle-1">Daily Rewards</th>
+                      <th class="mat-subtitle-1">Withdrawn </th>
+                      <th class="mat-subtitle-1">AVBW</th>
+                      <th class="mat-subtitle-1">Status</th>
+                      <th class="mat-subtitle-1">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Table data -->
+                    <tr *ngFor="
+                        let element of dataList
+                          | paginate
+                            : {
+                                itemsPerPage: perPage,
+                                currentPage: pageNo,
+                                totalItems: totalItems
+                              }
+                      ">
+                      <!-- Joined Date -->
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <div class="">
+                            <h6 class="mat-subtitle-1 f-s-14 f-w-700">
+                              {{
+                              element?.created_at | date : "dd/MM/yy"
+                              }}
+                            </h6>
+                          </div>
+                        </div>
+                      </td>
+
+                      <td>
+                        <h6 class="mat-subtitle-1 f-s-14 f-w-700">
+                          <span class="cursor-pointer" *ngIf="element?.package?.length">
+                            {{ element?.package[0]["name"] }}
+                          </span>
+                          <span *ngIf="!element?.package?.length">
+                            Referral License
+                          </span>
+                        </h6>
+                      </td>
+                      <td>
+                        <h6 class="mat-subtitle-1 f-s-14 f-w-700">
+                          <span class="cursor-pointer" *ngIf="element?.invested_xtr_amount">
+                            {{
+                            element?.invested_xtr_amount
+                            | number : '1.2-2'
+                            }} TEX
+                          </span>
+                          <ng-container *ngIf="!element?.invested_xtr_amount">
+                            -
+                          </ng-container>
+                        </h6>
+                      </td>
+                      <td>
+                        <h6 class="mat-subtitle-1 f-s-14 f-w-700">
+                          <span class="cursor-pointer" *ngIf="element?.package[0]">
+                            {{
+                            element?.package[0]?.roi
+
+                            }}%
+                          </span>
+                          <ng-container *ngIf="!element?.package[0]">
+                            -
+                          </ng-container>
+                        </h6>
+                      </td>
+                      <td>
+                        <h6 class="mat-subtitle-1 f-s-14 f-w-700">
+                          <ng-container *ngIf="element?.service_fee_xtr">
+                            {{
+                            element?.service_fee_xtr
+                            | number : '1.2-2'
+                            }} TEX
+                          </ng-container>
+                          <ng-container *ngIf="!element?.service_fee_xtr">
+                            {{ 0 | number : '1.2-2' }} TEX
+                          </ng-container>
+                        </h6>
+                      </td>
+                      <td>
+                        <h6 class="mat-subtitle-1 f-s-14 f-w-700">
+                          <ng-container *ngIf="element?.daily_rewards_total">
+                            <a (click)="navigateToDailyRewardsPage(element._id, element?.package[0]['name'])" #tooltip="matTooltip" matTooltip="View Rewards History" matTooltipPosition="below"
+                              style="cursor: pointer; color: blue;"> <u> {{
+                                element?.daily_rewards_total
+                                | number : '1.2-2'
+                                }} TEX</u> </a>
+                          </ng-container>
+                          <ng-container *ngIf="!element?.daily_rewards_total">
+                            {{ 0 | number : '1.2-2' }} TEX
+                          </ng-container>
+                        </h6>
+                      </td>
+                      <td>
+                        <h6 class="mat-subtitle-1 f-s-14 f-w-700">
+                          <ng-container *ngIf="element?.withdrawal_amount">
+                            {{
+                            element?.withdrawal_amount
+                            | number : '1.2-2'
+                            }} TEX
+                          </ng-container>
+                          <ng-container *ngIf="!element?.withdrawal_amount">
+                            {{ 0 | number : '1.2-2' }} TEX
+                          </ng-container>
+                        </h6>
+                      </td>
+                      <td>
+                        <h6 class="mat-subtitle-1 f-s-14 f-w-700">
+                          <ng-container *ngIf="element?.available_to_withdraw">
+                            {{
+                            element?.available_to_withdraw
+                            | number : '1.2-2'
+                            }} TEX
+                          </ng-container>
+                          <ng-container *ngIf="!element?.available_to_withdraw">
+                            {{ 0 | number : '1.2-2' }} TEX
+                          </ng-container>
+                        </h6>
+                      </td>
+                      <td>
+                        <h6 class="mat-subtitle-1 f-s-14 f-w-700">
+                          <span class="cursor-pointer">
+                            <span *ngIf="element?.is_roi_reached == true"
+                              class="bg-light-error f-w-600 pl-3 pr-3 rounded text-error font-0-8">
+                              Expired
+                            </span>
+                            <span *ngIf="!element?.is_roi_reached || element?.is_roi_reached == false"
+                              class="bg-light-success f-w-600 pl-3 pr-3 rounded text-success font-0-8">
+                              Active
+                            </span>
+                          </span>
+                          <!-- <ng-container *ngIf="!element?.invested_xtr_amount">
+                            -
+                          </ng-container> -->
+                        </h6>
+                      </td>
+                      <td>
+                        <button type="submit" mat-flat-button color="primary" class="font-weight-bold font-0-8"
+                          data-toggle="tooltip" data-placement="top" title="Transfer to wallet"
+                          (click)="openWithdrawModel(element)" [disabled]="
+                            element?.available_to_withdraw <= 0
+                          ">
+                          &nbsp; &nbsp; Transfer &nbsp; &nbsp;
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="no-data-comp" *ngIf="!dataList?.length">
+                <i class="fa fa-exclamation-triangle mb-1 font-2-8 text-grey" aria-hidden="true"></i>
+                <div class="font-weight-bold text-grey">No Data</div>
+              </div>
+
+              <div class="mt-5 text-right" [ngClass]="{
+                  ' opacity-0 ': !totalItems && !queryForm.get('query')?.value
+                }">
+                <pagination-controls class="custom-pagination" [autoHide]="true" (pageChange)="onPageChanged($event)">
+                </pagination-controls>
+              </div>
+
+              <hr>
+              <mat-card-title>Capital Recovery</mat-card-title>
+              <div class="row progress-box">
+                <div class="col-6">
+                  Total Earnings {{allPackagesDailyRewardSum | number : '1.2-2'}} TEX ({{capitalRecoveryPercentage}})
+                </div>
+                <div class="col-6" align="right">
+                  Total Investment {{totalInvestmentAmount | number : '1.2-2'}} TEX (100%)
+                </div>
+              </div>
+              <div class="progress" style="height: 30px;">
+                <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" role="progressbar"
+                  [attr.aria-valuenow]="capitalRecoveryPercentage" aria-valuemin="0" aria-valuemax="100"
+                  [style.width]="capitalRecoveryPercentage">{{capitalRecoveryPercentage}}</div>
+              </div>
+
+              <hr>
+              <mat-card-title>Expected Return Reaching</mat-card-title>
+              <div class="row progress-box">
+                <div class="col-6">
+                  Total Earnings {{allPackagesDailyRewardSum | number : '1.2-2'}} TEX
+                  ({{expectedReturnReachingPercentage}})
+                </div>
+                <div class="col-6" align="right">
+                  Total ROI {{expectedReturnReachingValue | number : '1.2-2'}} TEX (100%)
+                </div>
+              </div>
+              <div class="progress" style="height: 30px;">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                  [attr.aria-valuenow]="expectedReturnReachingPercentage" aria-valuemin="0" aria-valuemax="100"
+                  [style.width]="expectedReturnReachingPercentage">{{expectedReturnReachingPercentage}}</div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-loader *ngIf="loading"></app-loader>
+</div>

@@ -1,0 +1,29 @@
+.admin-wrapper {
+    display: flex;
+    width: 50%;
+    margin: auto;
+    overflow: hidden;
+    min-height: 600px;
+    height: 90%;
+    @media (max-width: 992px) {
+      width: 70%;
+    }
+    @media (max-width: 576px) {
+      width: 95%;
+    }
+  }
+  
+  .main-wrapper {
+    overflow: hidden;
+  }
+  
+  .access-denied-comp {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .access-denied-img {
+    width: 50%;
+  }

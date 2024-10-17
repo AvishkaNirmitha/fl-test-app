@@ -1,0 +1,183 @@
+<div
+  class="blank-layout-container justify-content-center align-items-center bg-light-primary"
+>
+  <div
+    class="position-relative row w-100 h-100 bg-gredient justify-content-center"
+  >
+    <div class="col-lg-4 d-flex align-items-center">
+      <mat-card class="cardWithShadow boxed-auth">
+        <mat-card-content class="p-32">
+          <div class="text-center">
+            <a [routerLink]="['/dashboard']">
+              <img
+                src="./assets/images/site/main-logo-transparent-bg.png"
+                class="align-middle m-2 logo"
+                alt="logo"
+              />
+            </a>
+          </div>
+
+          <div class="or-border m-t-30">
+            <ng-container *ngIf="activeTab == 1">sign in with</ng-container>
+            <ng-container *ngIf="activeTab == 2">Verification</ng-container>
+          </div>
+
+          <ng-container *ngIf="activeTab == 1">
+            <form
+              role="form"
+              class="m-t-30"
+              [formGroup]="rForm"
+              (ngSubmit)="loginUser()"
+            >
+              <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block"
+                >Email</mat-label
+              >
+              <mat-form-field
+                appearance="outline"
+                class="w-100"
+                color="primary"
+              >
+                <input
+                  matInput
+                  placeholder="Enter Email"
+                  type="text"
+                  formControlName="email"
+                />
+
+                <mat-error
+                  *ngIf="
+                    !rForm.controls['email'].valid &&
+                    rForm.controls['email'].touched
+                  "
+                  >Valid email is required</mat-error
+                >
+              </mat-form-field>
+
+              <!-- password -->
+              <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block"
+                >Password</mat-label
+              >
+
+              <mat-form-field
+                appearance="outline"
+                class="w-100"
+                color="primary"
+              >
+                <input
+                  matInput
+                  [type]="password_eye_icon ? 'text' : 'password'"
+                  formControlName="password"
+                  placeholder="Enter password"
+                />
+
+                <i
+                  class="cursor-pointer font-0-9-5 fa"
+                  [ngClass]="{
+                    ' fa-eye ': password_eye_icon,
+                    ' fa-eye-slash ': !password_eye_icon
+                  }"
+                  aria-hidden="true"
+                  (click)="password_eye_icon = !password_eye_icon"
+                ></i>
+
+                <mat-error
+                  *ngIf="
+                    !rForm.controls['password'].valid &&
+                    rForm.controls['password'].touched
+                  "
+                  >Password is required</mat-error
+                >
+              </mat-form-field>
+
+              <!-- <div class="d-flex align-items-center m-b-12">
+                <a
+                  [routerLink]="['/']"
+                  class="text-primary f-w-600 text-decoration-none m-l-auto f-s-14"
+                  >Forgot Password ?</a
+                >
+              </div> -->
+              <button
+                type="submit"
+                mat-flat-button
+                color="primary"
+                class="w-100"
+                [disabled]="!rForm.valid"
+              >
+                Sign In
+              </button>
+              <!-- input -->
+            </form>
+            <span class="d-block f-w-500 text-center m-t-24"
+              >New to 28X Club?
+              <a
+                [routerLink]="['/authentication/signup']"
+                class="text-decoration-none text-primary f-w-500 f-s-14"
+              >
+                Create an account</a
+              >
+            </span>
+            <span class="d-block f-w-500 text-center mt-1">
+              Forgot password ?
+              <a
+                [routerLink]="['/authentication/forgot-password']"
+                class="text-decoration-none text-primary f-w-500 f-s-14"
+                >reset now</a
+              >
+            </span>
+          </ng-container>
+
+          <ng-container *ngIf="activeTab == 2">
+            <form role="form" class="m-t-30" [formGroup]="authCodeForm">
+              <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block"
+                >Google 2FA code</mat-label
+              >
+              <mat-form-field
+                appearance="outline"
+                class="w-100"
+                color="primary"
+              >
+                <input
+                  matInput
+                  placeholder="Enter Google 2FA code"
+                  type="text"
+                  formControlName="authCode"
+                  (focus)="authCodeFocus = true"
+                  (blur)="authCodeFocus = false"
+                />
+
+                <mat-error *ngIf="authCode.errors?.['required']"
+                  >Google 2FA code is required</mat-error
+                >
+                <mat-error
+                  *ngIf="authCode.errors?.['pattern']?.['requiredPattern']"
+                  >Google 2FA code should be 6 characters!</mat-error
+                >
+              </mat-form-field>
+
+              <button
+                type="submit"
+                mat-flat-button
+                color="primary"
+                class="w-100"
+                (click)="verifyCode()"
+                [disabled]="!authCodeForm.valid"
+              >
+                Log in
+              </button>
+            </form>
+          </ng-container>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="overly-loading-bg">
+  <div class="loader"></div>
+</div> -->
+
+<div class="overlay" *ngIf="loading">
+  <div class="overlay__inner">
+    <div class="overlay__content"><span class="loader"></span></div>
+  </div>
+</div>

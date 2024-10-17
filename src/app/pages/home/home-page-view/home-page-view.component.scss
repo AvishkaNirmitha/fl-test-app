@@ -1,0 +1,41 @@
+// .navbar-nav .nav-item a {
+.login-btn {
+  .main-btn {
+    height: 45px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    color: white !important;
+  }
+}
+// }
+
+.navbar-brand img {
+  max-width: 200px !important;
+}
+
+.logo-color-purple-text{
+
+  color: #8243D7 !important;
+}
+
+.header-image {
+  padding-top: 15px !important;
+
+  @media (max-width: 576px) {
+    text-align: center;
+  }
+}
+
+.header-image .image {
+  width: 74% !important;
+  margin-bottom: 8rem !important;
+
+  @media (max-width: 576px) {
+    width: 53% !important;
+  }
+}
+
+.header-image .image-shape {
+  bottom: 0px !important;
+}

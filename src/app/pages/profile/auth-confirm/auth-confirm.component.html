@@ -1,0 +1,324 @@
+<div class="display-flex mb-3 mr-4 mt-3">
+  <i
+    mat-button
+    (click)="close(false)"
+    class="fa fa-times ml-auto font-1-4 cursor-pointer"
+    aria-hidden="true"
+    data-toggle="tooltip"
+    data-placement="top"
+    title="Close"
+  ></i>
+</div>
+<!-- <h1 class="font-1-6 header-title text-center mb-4">
+  Send Verification Code
+</h1> -->
+
+<div [ngSwitch]="activeTab" *ngIf="toggle">
+  <h1 class="font-1-6 header-title text-center mb-4" *ngSwitchCase="1">
+    Send Verification Code
+  </h1>
+  <h1 class="font-1-6 header-title text-center mb-4" *ngSwitchCase="2">
+    Verification Code
+  </h1>
+  <h1 class="font-1-6 header-title text-center mb-4" *ngSwitchCase="3">
+    Setup Google Two-Factor Authentication
+  </h1>
+</div>
+
+<div class="font-1 mb-4 pl-4 pr-4">
+  <div class="form-wrapper">
+    <form role="form">
+      <div
+        class="display-flex align-items-center justify-content-between pb-3"
+        [ngClass]="{
+          'align-items-center': toggle,
+          'align-items-sm-center': !toggle
+        }"
+      >
+        <!-- <div *ngIf="toggle">
+          <div [ngSwitch]="activeTab">
+            <h2 class="header-title text-center font-1-6 m-0" *ngSwitchCase="1">
+              Send Verification Code
+            </h2>
+            <h2 class="header-title text-center font-1-6 m-0" *ngSwitchCase="2">
+              Verification Code
+            </h2>
+            <h2 class="header-title text-center font-1-6 m-0" *ngSwitchCase="3">
+              Setup Google Two-Factor Authentication
+            </h2>
+          </div>
+        </div> -->
+        <div *ngIf="!toggle">
+          <h2 class="header-title text-center font-1-6 m-0">
+            Disable Google Two-Factor Authentication
+          </h2>
+        </div>
+      </div>
+
+      <ul ngbNav class="nav-tabs" [hidden]="!toggle">
+        <li *ngIf="activeTab == 1">
+          <ng-container ngbNavContent>
+            <div class="display-flex flex-column h-100">
+              <div class="mt-2 mb-3 text-transform-initial mt-3 text-center">
+                Please click the below button to receive a verification code to
+                <span class="text-primary">{{ userEmail }}</span>
+              </div>
+
+              <div class="w-100 text-center">
+                <!-- <button
+            type="submit "
+            class="btn button-success mb-1 mt-3 pb-2 pt-2"
+            (click)="sendRequest()"
+          >
+            Send Code
+          </button> -->
+
+                <button
+                  class="main-btn wow mt-10 mb-10 font-0-9-5 pt-2 pb-2"
+                  (click)="sendRequest()"
+                >
+                  <span> Send Code</span>
+                </button>
+              </div>
+            </div>
+          </ng-container>
+        </li>
+        <li *ngIf="activeTab == 2">
+          <ng-container ngbNavContent>
+            <!-- <div class="mt-2 mb-3 text-transform-initial mt-3">
+              Please enter the verification code that was sent to
+              <span class="text-primary">{{ userEmail }}</span>
+            </div> -->
+
+            <form role="form" class="row mt-3" [formGroup]="form">
+              <div class="input-div col-12">
+                <!--  -->
+                <!--  -->
+                <!--  -->
+
+                <!-- <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">
+                  Please enter the verification code that was sent to
+                  <span class="text-primary">{{ userEmail }}</span>
+                </mat-label> -->
+
+                <div class="mt-2 mb-3 text-transform-initial mt-3 text-center">
+                  Please enter the verification code that was sent to
+                  <span class="text-primary">{{ userEmail }}</span>
+                </div>
+
+                <mat-form-field
+                  appearance="outline"
+                  class="w-100"
+                  color="primary"
+                >
+                  <input
+                    matInput
+                    placeholder="Enter Verification Code"
+                    type="text"
+                    formControlName="code"
+                  />
+
+                  <mat-error
+                    *ngIf="
+              form.controls['code']?.errors?.['required'] &&
+              form.controls['code']?.touched
+            "
+                  >
+                    Verification code is required
+                  </mat-error>
+                  <mat-error
+                    *ngIf="
+              (form.controls['code']?.errors?.['minlength'] &&
+                form.controls['code']?.touched) ||
+              (form.controls['code']?.errors?.['maxlength'] &&
+                form.controls['code']?.touched)
+            "
+                  >
+                    Verification code should be 6 digits
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="text-center w-100">
+                <!-- <button
+                  type="submit "
+                  class="btn button-success mb-1 mt-3 pb-2 pt-2"
+                  [disabled]="!form.valid"
+                  (click)="enableTwoFactorAuth()"
+                >
+                  Confirm
+                </button> -->
+
+                <button
+                  class="main-btn wow mt-10 mb-10 font-0-9-5 pt-2 pb-2"
+                  [disabled]="!form.valid"
+                  (click)="enableTwoFactorAuth()"
+                >
+                  <span> Confirm</span>
+                </button>
+              </div>
+            </form>
+          </ng-container>
+        </li>
+        <li *ngIf="activeTab == 3">
+          <ng-container ngbNavContent>
+            <div
+              class="pb-0 text-transform-initial text-left pt-3 font-1 font-weight-500"
+            >
+              1.Download Google Authenticator Android/iOS
+            </div>
+            <div class="pb-4 text-transform-initial text-left pt-2 font-0-8-5">
+              Google Authenticator can be downloaded from the App store or
+              Google Play. search "Google Authenticator" and proceed to
+              download.
+            </div>
+
+            <div
+              class="pt-4 pb-0 text-transform-initial text-left font-1 font-weight-500"
+            >
+              2.Add key phrase into Google Authenticator and remember the key
+              phrase
+            </div>
+            <div class="pb-3 text-transform-initial text-left pt-2 font-0-8-5">
+              Open Google Authenticator, scan the QR code below or manually
+              enter the key phrase to activate the verification token. Key
+              phrase is used to recover Google Authenticator in the event of a
+              loss or change of device -- please make sure to keep the key
+              phrase safe before setting up Google Authenticator.
+            </div>
+
+            <div
+              class="qr-secret-section d-flex flex-column align-items-center py-3"
+            >
+              <img src="{{ qrImage }}" alt="qrCode" />
+
+              <p
+                class="text-dark bg-white text-center p-2 mt-3 cursor-pointer"
+                (click)="copyToClipboard(secret)"
+              >
+                {{ secret }}
+              </p>
+            </div>
+
+            <div class="pb-0 text-transform-initial text-left pt-3 font-1">
+              3.Set Up Google Two-Factor Authentication
+            </div>
+            <form role="form" class="row pt-3" [formGroup]="verificationForm">
+              <div class="input-div col-12">
+                <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block"
+                  >Please enter the Google 2FA code
+                  <span class="required-icon">*</span></mat-label
+                >
+                <mat-form-field
+                  appearance="outline"
+                  class="w-100"
+                  color="primary"
+                >
+                  <input
+                    matInput
+                    placeholder="Enter Google 2FA code"
+                    type="text"
+                    formControlName="code"
+                  />
+
+                  <mat-error
+                    *ngIf="
+                       verificationForm.controls['code']?.errors?.['required'] &&
+              verificationForm.controls['code']?.touched
+                  "
+                    >Google 2FA code is required</mat-error
+                  >
+                  <mat-error
+                    *ngIf="
+                      (verificationForm.controls['code']?.errors?.['minlength'] &&
+                verificationForm.controls['code']?.touched) ||
+              (verificationForm.controls['code']?.errors?.['maxlength'] &&
+                verificationForm.controls['code']?.touched)
+                  "
+                    >Google 2FA code should be 6 digits</mat-error
+                  >
+                </mat-form-field>
+                <div class="text-center w-100">
+                  <button
+                    type="submit"
+                    class="main-btn mt-10 mb-10 font-0-9-5 pt-2 pb-2"
+                    (click)="verifyTwoFactorAuth()"
+                  >
+                    <span> Confirm </span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </ng-container>
+        </li>
+      </ul>
+
+      <mat-dialog-content class="scrollbarStyle">
+        <div class="mt-2" [hidden]="!toggle"></div>
+        <div class="disable-content" *ngIf="!toggle">
+          <form role="form" class="row pt-3" [formGroup]="disableForm">
+            <!-- <div class="input-div col-12"> -->
+            <!--  -->
+            <!--  -->
+            <!--  -->
+            <!--  -->
+
+            <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block"
+              >Please enter the Google 2FA code
+              <span class="required-icon">*</span></mat-label
+            >
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <input
+                matInput
+                placeholder="Enter Google 2FA code"
+                type="text"
+                formControlName="code"
+              />
+
+              <mat-error
+                *ngIf="
+           disableForm.controls['code']?.errors?.['required'] &&
+          disableForm.controls['code']?.touched
+    "
+              >
+                Google 2FA code is required
+              </mat-error>
+              <mat-error
+                *ngIf="
+     (disableForm.controls['code']?.errors?.['minlength'] &&
+            disableForm.controls['code']?.touched) ||
+          (disableForm.controls['code']?.errors?.['maxlength'] &&
+            disableForm.controls['code']?.touched)
+    "
+              >
+                Google 2FA code should be 6 digits
+              </mat-error>
+            </mat-form-field>
+
+            <!-- </div> -->
+
+            <div class="display-flex justify-content-center w-100">
+              <button
+                class="main-btn wow mt-10 mb-10 font-0-9-5 pt-2 pb-2"
+                [disabled]="!disableForm.valid"
+                type="submit"
+                (click)="disableTwoFactorAuth()"
+              >
+                <span> Confirm 2FA Code </span>
+              </button>
+            </div>
+          </form>
+        </div>
+        <!-- <app-loader *ngIf="loading"></app-loader> -->
+      </mat-dialog-content>
+    </form>
+  </div>
+</div>
+
+<!--  -->
+<!--  -->
+<!--  -->
+<!--  -->
+<!--  -->
+<!--  -->
+<!--  -->

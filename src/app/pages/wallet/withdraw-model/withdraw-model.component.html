@@ -1,0 +1,210 @@
+<div class="display-flex mb-3 mr-4 mt-3">
+  <i
+    class="fa fa-times ml-auto font-1-4 cursor-pointer"
+    aria-hidden="true"
+    data-toggle="tooltip"
+    data-placement="top"
+    title="Close"
+    (click)="closeModel()"
+  ></i>
+</div>
+<h1 class="font-1-6 header-title text-center mb-4">Withdraw</h1>
+
+<div class="font-1 mb-4 pl-4 pr-4">
+  <div
+    class="form-wrapper"
+    *ngIf="
+      this.parentData?.userDetails?.two_factor_auth_enabled &&
+      this.parentData?.userDetails?.kyc_approval_status == 'approved' &&
+        this.parentData?.userDetails?.is_kyc_approved
+    "
+  >
+    <form role="form" [formGroup]="rForm">
+      <div class="">
+        <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">
+          withdraw address(Polygon)<span class="required-icon"
+            >*</span
+          ></mat-label
+        >
+        <mat-form-field appearance="outline" class="w-100" color="primary">
+          <input
+            matInput
+            placeholder="Enter withdraw address(Polygon)"
+            type="text"
+            formControlName="withdraw_address"
+            [ngClass]="{
+              'cursor-not-allowed text-grey': verfication_code_sent
+            }"
+          />
+
+          <mat-error
+            *ngIf="
+             !rForm.controls['withdraw_address'].valid &&
+             rForm.controls['withdraw_address'].touched &&
+                !rForm.controls['withdraw_address'].errors?.['pattern'] &&
+                !rForm.controls['withdraw_address']?.errors?.['maxlength'] &&
+                !rForm.controls['withdraw_address']?.errors?.['minlength']
+            "
+            >withdraw address is required</mat-error
+          >
+          <mat-error
+            *ngIf="
+               !rForm.controls['withdraw_address'].valid &&
+                (rForm.controls['withdraw_address']?.errors?.['maxlength'] ||
+                rForm.controls['withdraw_address']?.errors?.['minlength']) &&
+                rForm.controls['withdraw_address']?.touched
+            "
+            >Valid withdraw address is required</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="mt-1">
+        <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">
+          Amount (TEX)<span class="required-icon">*</span></mat-label
+        >
+        <mat-form-field appearance="outline" class="w-100" color="primary">
+          <input
+            matInput
+            placeholder="Enter Amount (TEX)"
+            type="number"
+            formControlName="amount"
+            autocomplete="new-password"
+            [readOnly]="verfication_code_sent"
+            [ngClass]="{
+              'cursor-not-allowed text-grey': verfication_code_sent
+            }"
+          />
+
+          <mat-error
+            *ngIf="
+        rForm.controls['amount']?.errors?.['required'] &&
+              rForm.controls['amount']?.touched
+            "
+            >amount is required</mat-error
+          >
+          <mat-error
+            *ngIf=" (rForm.controls['amount']?.errors?.['min'] ||
+            rForm.controls['amount']?.errors?.['max']) &&
+          rForm.controls['amount']?.touched"
+          >
+            amount should be $0.01 to $10,000,000,000.00</mat-error
+          >
+        </mat-form-field>
+      </div>
+
+      <div class="mt-1">
+        <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">
+          2fA Auth code<span class="required-icon">*</span></mat-label
+        >
+        <mat-form-field appearance="outline" class="w-100" color="primary">
+          <input
+            matInput
+            placeholder="Enter Verification code"
+            type="text"
+            formControlName="twoFa_auth_code"
+            autocomplete="new-password"
+          />
+
+          <mat-error
+            *ngIf="
+ rForm.controls['twoFa_auth_code']?.errors?.['required'] &&
+              rForm.controls['twoFa_auth_code']?.['touched']
+            "
+          >
+            Two factor code is required</mat-error
+          >
+          <mat-error
+            *ngIf="
+              (rForm.controls['twoFa_auth_code']?.errors?.['minlength'] &&
+                rForm.controls['twoFa_auth_code']?.touched) ||
+              (rForm.controls['twoFa_auth_code']?.errors?.['maxlength'] &&
+                rForm.controls['twoFa_auth_code']?.touched)
+            "
+          >
+            Two factor code should be 6 digits</mat-error
+          >
+        </mat-form-field>
+      </div>
+
+      <div class="font-0-9 font-we mb-2 mt-2 text-grey">
+        <span class="required-icon">*</span>
+
+        You will receive TEX (Polygon) amount in USDT based on the current rate
+        of TEX to USDT.
+      </div>
+
+      <div class="font-0-9 font-we mb-2 mt-2 text-grey">
+        <span class="required-icon">*</span>
+
+        For this transaction, a {{ service_fee }}% service fee will be charged
+        based on your withdrawal amount.
+      </div>
+
+      <button
+        type="submit"
+        mat-flat-button
+        color="primary"
+        class="w-100"
+        (click)="handleWithdraw()"
+        [disabled]="!rForm.valid"
+      >
+        Withdraw
+      </button>
+      <!-- input -->
+    </form>
+  </div>
+
+  <div
+    class="font-0-9-5 text-center"
+    *ngIf="
+      !this.parentData?.userDetails?.two_factor_auth_enabled ||
+      (this.parentData?.userDetails?.kyc_approval_status != 'approved' &&
+        !this.parentData?.userDetails?.is_kyc_approved)
+    "
+  >
+    Please do below thing(s) to get access for Withdrawal
+  </div>
+
+  <!-- <div class=""> -->
+  <div
+    class="input-div mb-4 mt-4 text-center"
+    *ngIf="
+      !this.parentData?.userDetails?.two_factor_auth_enabled ||
+      (this.parentData?.userDetails?.kyc_approval_status != 'approved' &&
+        !this.parentData?.userDetails?.is_kyc_approved)
+    "
+  >
+    <button
+      type="submit"
+      mat-flat-button
+      color="primary"
+      class="w-100"
+      (click)="goToProfilePage()"
+      data-toggle="tooltip"
+      data-placement="top"
+      title="go to profile page and enable two factor auth"
+      *ngIf="!this.parentData?.userDetails?.two_factor_auth_enabled"
+    >
+      Enable Two Factor Auth
+    </button>
+    <button
+      type="submit"
+      mat-flat-button
+      color="primary"
+      class="w-100 mt-2"
+      (click)="goToProfilePage()"
+      data-toggle="tooltip"
+      data-placement="top"
+      title="go to profile page and enable two factor auth"
+      *ngIf="
+        this.parentData?.userDetails?.kyc_approval_status != 'approved' &&
+        !this.parentData?.userDetails?.is_kyc_approved
+      "
+    >
+      Update Profile For KYC
+    </button>
+  </div>
+  <!-- </div> -->
+</div>
+
+<app-loader *ngIf="loading"></app-loader>

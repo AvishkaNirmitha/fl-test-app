@@ -5,7 +5,6 @@ import { GlobalService } from "src/app/services/global.service";
 import { LocalStorageHandleService } from "src/app/services/local-storage-handle.service";
 import { MsgHandelService } from "src/app/services/msg-handel.service";
 import { TicketService } from "src/app/services/ticket.service";
-import { UserService } from "src/app/services/user.service";
 
 @Component({
   selector: "app-tickets-view",
@@ -32,7 +31,6 @@ export class TicketsViewComponent {
     private _LocalStorageHandleService: LocalStorageHandleService,
     private _MsgHandelService: MsgHandelService,
     private globalService: GlobalService,
-    private userService: UserService,
     private formBuilder: FormBuilder,
     private ticketService: TicketService
   ) {}

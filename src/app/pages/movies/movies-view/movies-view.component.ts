@@ -1,7 +1,6 @@
 import { Component } from "@angular/core";
 import { MovieBookingModelComponent } from "../movie-booking-model/movie-booking-model.component";
 import { MatDialog } from "@angular/material/dialog";
-import { DashboardService } from "src/app/services/dashboard.service";
 import { MsgHandelService } from "src/app/services/msg-handel.service";
 import { TicketService } from "src/app/services/ticket.service";
 import { Router } from "@angular/router";
@@ -17,7 +16,6 @@ export class MoviesViewComponent {
 
   constructor(
     public dialog: MatDialog,
-    private dashboardService: DashboardService,
     private msgHandelService: MsgHandelService,
     private ticketService: TicketService,
     private router: Router
@@ -12995,21 +12993,19 @@ export class MoviesViewComponent {
   }
 
   private getMoviesData() {
-    this.loading = true;
-    this.dashboardService.getMovies().subscribe(
-      (response) => {
-        this.loading = false;
-
-        if (response?.data?.list) {
-          this.dataList = response?.data?.list;
-        }
-
-        console.log("response----", response);
-      },
-      (error) => {
-        this.loading = false;
-        this.msgHandelService.handleError(error);
-      }
-    );
+    // this.loading = true;
+    // this.dashboardService.getMovies().subscribe(
+    //   (response) => {
+    //     this.loading = false;
+    //     if (response?.data?.list) {
+    //       this.dataList = response?.data?.list;
+    //     }
+    //     console.log("response----", response);
+    //   },
+    //   (error) => {
+    //     this.loading = false;
+    //     this.msgHandelService.handleError(error);
+    //   }
+    // );
   }
 }

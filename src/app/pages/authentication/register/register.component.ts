@@ -2,31 +2,20 @@ import { Component } from "@angular/core";
 import { FirebaseServerApp } from "@angular/fire/app";
 import {
   FormGroup,
-  FormControl,
   Validators,
   AbstractControl,
   FormBuilder,
 } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Subscription } from "rxjs";
 import { JwtService } from "src/app/infrastructure/jwt.service";
-import { AuthService } from "src/app/services/authentication.service";
 import { FirebaseService } from "src/app/services/firebase.service";
 import { LocalStorageHandleService } from "src/app/services/local-storage-handle.service";
 import { MsgHandelService } from "src/app/services/msg-handel.service";
-import { UserService } from "src/app/services/user.service";
 import {
   confPassValidation,
   pureEmail,
   removeWhiteSpaces,
-  strongPasswordValidation,
 } from "src/app/services/validations/validator";
-import {
-  USER_ROUTE,
-  USER_IP,
-  USER_PROTOCOL,
-  USER_PORT,
-} from "src/assets/configs/localstorage.config";
 
 @Component({
   selector: "app-register",
@@ -51,12 +40,10 @@ export class AppSideRegisterComponent {
     private _JwtService: JwtService,
     private _FormBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private _AuthService: AuthService,
     private _MsgHandelService: MsgHandelService,
     private firebaseService: FirebaseService,
     // private _DomManipulationService: DomManipulationService,
-    private _LocalStorageHandleService: LocalStorageHandleService,
-    private userService: UserService
+    private _LocalStorageHandleService: LocalStorageHandleService
   ) {
     // form data
     this.rForm = this._FormBuilder.group(

@@ -7,18 +7,10 @@ import {
 } from "@angular/forms";
 import { Router } from "@angular/router";
 import { JwtService } from "src/app/infrastructure/jwt.service";
-import { AuthService } from "src/app/services/authentication.service";
 import { LocalStorageHandleService } from "src/app/services/local-storage-handle.service";
 import { MsgHandelService } from "src/app/services/msg-handel.service";
-import {
-  USER_ROUTE,
-  USER_IP,
-  USER_PORT,
-  USER_PROTOCOL,
-} from "src/assets/configs/localstorage.config";
 
 import { pureEmail } from "../../../services/validations/validator";
-import { UserService } from "src/app/services/user.service";
 import { FirebaseService } from "src/app/services/firebase.service";
 
 @Component({
@@ -39,11 +31,8 @@ export class AppSideLoginComponent {
     private _Router: Router,
     private _JwtService: JwtService,
     private _FormBuilder: FormBuilder,
-    private _AuthService: AuthService,
     private _MsgHandelService: MsgHandelService,
-    // private _DomManipulationService: DomManipulationService,
     private _LocalStorageHandleService: LocalStorageHandleService,
-    private userService: UserService,
     private firebaseService: FirebaseService
   ) {
     // form data

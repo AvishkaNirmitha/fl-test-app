@@ -24,9 +24,7 @@ import { SidebarComponent } from "./layouts/full/sidebar/sidebar.component";
 import { HeaderComponent } from "./layouts/full/header/header.component";
 import { BrandingComponent } from "./layouts/full/sidebar/branding.component";
 import { AppNavItemComponent } from "./layouts/full/sidebar/nav-item/nav-item.component";
-import { AuthService } from "./services/authentication.service";
 import { JwtService } from "./infrastructure/jwt.service";
-import { MainService } from "./infrastructure/api.service";
 import { AuthGuardService } from "./infrastructure/auth-guard.service";
 import { MsgHandelService } from "./services/msg-handel.service";
 import { JwtTokenValidatorService } from "./services/jwt-token-validator.service";
@@ -72,9 +70,7 @@ import { provideFirestore, getFirestore } from "@angular/fire/firestore";
   exports: [TablerIconsModule],
   bootstrap: [AppComponent],
   providers: [
-    AuthService,
     JwtService,
-    MainService,
     AuthGuardService,
     MsgHandelService,
     JwtTokenValidatorService,

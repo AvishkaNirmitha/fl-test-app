@@ -6,7 +6,6 @@ import { JwtTokenValidatorService } from "src/app/services/jwt-token-validator.s
 import { JwtService } from "src/app/services/jwt.service";
 import { LocalStorageHandleService } from "src/app/services/local-storage-handle.service";
 import { MsgHandelService } from "src/app/services/msg-handel.service";
-import { UserService } from "src/app/services/user.service";
 import {
   IS_ADMIN_AS_USER,
   USER_ROUTE,

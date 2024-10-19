@@ -2,7 +2,6 @@ import { BreakpointObserver } from "@angular/cdk/layout";
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { Subscription } from "rxjs";
 import { MatSidenav } from "@angular/material/sidenav";
-import { UserService } from "src/app/services/user.service";
 import { GlobalService } from "src/app/services/global.service";
 import { MsgHandelService } from "src/app/services/msg-handel.service";
 
@@ -32,7 +31,6 @@ export class FullComponent implements OnInit {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private userService: UserService,
     private globalService: GlobalService,
     private msgHandelService: MsgHandelService
   ) {
@@ -46,8 +44,6 @@ export class FullComponent implements OnInit {
 
         this.isContentWidthFixed = state.breakpoints[MONITOR_VIEW];
       });
-
-    this.loadAccountData();
   }
 
   ngOnInit(): void {}
@@ -66,20 +62,5 @@ export class FullComponent implements OnInit {
 
   onSidenavOpenedChange(isOpened: boolean) {
     this.isCollapsedWidthFixed = !this.isOver;
-  }
-
-  loadAccountData() {
-    this.userService.getUserById(this.userService.getCurrentUserId()).subscribe(
-      (response) => {
-        // response.data.is_affiliate_user = false;
-        this.globalService.setLoggedUserObj(response.data);
-      },
-      (error) => {
-        // show msg
-        // this._MsgHandelService.handleError(error);
-
-        this.msgHandelService.showErrorMsg("", error?.msg);
-      }
-    );
   }
 }

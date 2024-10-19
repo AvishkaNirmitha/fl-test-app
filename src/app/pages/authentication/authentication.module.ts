@@ -16,10 +16,6 @@ import { AuthenticationRoutes } from "./authentication.routing";
 
 import { AppSideLoginComponent } from "./login/login.component";
 import { AppSideRegisterComponent } from "./register/register.component";
-import { MsgHandelService } from "src/app/services/msg-handel.service";
-import { AuthService } from "src/app/services/authentication.service";
-import { MainService } from "src/app/infrastructure/api.service";
-import { ForgotPasswordComponent } from "./forgot-password/forgot-password.component";
 
 @NgModule({
   imports: [
@@ -32,17 +28,7 @@ import { ForgotPasswordComponent } from "./forgot-password/forgot-password.compo
     MatButtonModule,
     FormsModule,
     ReactiveFormsModule,
-    TablerIconsModule.pick(TablerIcons),
   ],
-  declarations: [
-    AppSideLoginComponent,
-    AppSideRegisterComponent,
-    ForgotPasswordComponent,
-  ],
-  // providers : [
-  //   MsgHandelService,
-  //   AuthService,
-  //   MainService,
-  // ]
+  declarations: [AppSideLoginComponent, AppSideRegisterComponent],
 })
 export class AuthenticationModule {}

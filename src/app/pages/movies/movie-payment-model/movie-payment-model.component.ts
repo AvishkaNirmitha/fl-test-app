@@ -8,7 +8,6 @@ import {
 import { GlobalService } from "src/app/services/global.service";
 import { JwtTokenValidatorService } from "src/app/services/jwt-token-validator.service";
 import { MsgHandelService } from "src/app/services/msg-handel.service";
-import { UserService } from "src/app/services/user.service";
 import { ConfirmDialogComponent } from "src/app/shared/confirm-dialog/confirm-dialog.component";
 import { removeWhiteSpaces } from "src/app/services/validations/validator";
 import { TicketService } from "src/app/services/ticket.service";
@@ -33,7 +32,6 @@ export class MoviePaymentModelComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public parentData: any,
     private _FormBuilder: FormBuilder,
 
-    private userService: UserService,
     private _JwtTokenValidatorService: JwtTokenValidatorService,
     private _MsgHandelService: MsgHandelService,
     private globalService: GlobalService,

@@ -45,22 +45,8 @@ export class MovieBookingModelComponent implements OnInit, OnDestroy {
     public dialog: MatDialog
   ) {
     this.rForm = this._FormBuilder.group({
-      fullSeatCount: [
-        null,
-        Validators.compose([
-          Validators.required,
-          // Validators.min(1),
-          // Validators.max(100),
-        ]),
-      ],
-      HalfSeatCount: [
-        null,
-        Validators.compose([
-          Validators.required,
-          // Validators.min(1),
-          // Validators.max(100),
-        ]),
-      ],
+      fullSeatCount: [null, Validators.compose([Validators.required])],
+      HalfSeatCount: [null, Validators.compose([Validators.required])],
       showTime: [1, Validators.compose([Validators.required])],
 
       bookDate: [null, Validators.required],
@@ -107,9 +93,9 @@ export class MovieBookingModelComponent implements OnInit, OnDestroy {
   }
 
   openCardPayment() {
-    const date = new Date("Wed Oct 16 2024 00:00:00 GMT+0530");
-    const isoDate = date.toISOString();
-    console.log(isoDate); // Output: 2024-10-15T18:30:00.000Z
+    if (!this.rForm?.valid) {
+      return;
+    }
 
     const dialogRef = this.dialog.open(MoviePaymentModelComponent, {
       width: "45vw",
@@ -129,9 +115,9 @@ export class MovieBookingModelComponent implements OnInit, OnDestroy {
             ? this.parentData?.data?.image
             : "movie image",
           price: this.calTotal(),
-          // this.parentData?.data
         },
       },
+      panelClass: "movie-model",
     });
 
     dialogRef.afterClosed().subscribe((result) => {

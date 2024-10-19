@@ -91,6 +91,31 @@ export class MsgHandelService implements ErrorHandler {
     }
   }
 
+  public handleFirebaseError(error: any) {
+    const httpErrorCode = error.status;
+    switch (httpErrorCode) {
+      case 403:
+        this.showError("Forbidden");
+        this._Router.navigateByUrl("");
+        break;
+      case 401:
+        this.showError("Unauthorized");
+        this._Router.navigateByUrl("");
+        break;
+      case 400:
+        this.showError("Bad Request");
+        break;
+      default: {
+        if (error?.message !== undefined || error?.message !== null) {
+          // call for customized error handle
+          this.handleCustomErrors(error);
+        } else {
+          this.showError(this.DEFAULT_ERROR_TITLE);
+        }
+      }
+    }
+  }
+
   /**
    * show custom errors according to
    * @param errorMsg : custom error appended with response body
@@ -99,7 +124,7 @@ export class MsgHandelService implements ErrorHandler {
     if (errorMsg?.message == "Login session ended. Please login again") {
       this.showError(errorMsg?.message);
     } else {
-      this.showError(errorMsg.error?.msg);
+      this.showError(errorMsg?.message);
     }
   }
 

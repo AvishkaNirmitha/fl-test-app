@@ -46,18 +46,6 @@ export class AppSideLoginComponent {
       ],
       password: [null, Validators.compose([Validators.required])],
     });
-
-    this.authCodeForm = this._FormBuilder.group({
-      authCode: [
-        null,
-        [
-          Validators.required,
-          Validators.minLength(6),
-          Validators.maxLength(6),
-          Validators.pattern(`^[0-9]{6,6}$`),
-        ],
-      ],
-    });
   }
 
   ngOnInit() {}
@@ -87,15 +75,15 @@ export class AppSideLoginComponent {
             value: response.user.uid,
           });
 
-          // this._MsgHandelService.showSuccessMsg("", "Successfully signed in");
-          // load the home
           this._Router.navigateByUrl("/movies");
         });
       })
       .catch((error) => {
-        console.error("Login error:", error);
+        this.loading = false;
 
-        this._MsgHandelService.handleError(error);
+        console.log("Login error:", error?.message);
+
+        this._MsgHandelService.handleFirebaseError(error);
       });
   };
 
@@ -116,15 +104,15 @@ export class AppSideLoginComponent {
             value: response.user.uid,
           });
 
-          // this._MsgHandelService.showSuccessMsg("", "Successfully signed in");
-          // load the home
           this._Router.navigateByUrl("/movies");
         });
       })
       .catch((error) => {
-        console.error("Login error:", error);
+        this.loading = false;
 
-        this._MsgHandelService.handleError(error);
+        console.log("Login error:", error?.message);
+
+        this._MsgHandelService.handleFirebaseError(error);
       });
   }
 }

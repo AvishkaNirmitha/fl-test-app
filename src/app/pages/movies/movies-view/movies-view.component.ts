@@ -12976,6 +12976,7 @@ export class MoviesViewComponent {
       data: {
         data: item,
       },
+      panelClass: "movie-model",
     });
 
     dialogRef.afterClosed().subscribe((result) => {

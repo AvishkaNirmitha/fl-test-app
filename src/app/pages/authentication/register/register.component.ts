@@ -119,6 +119,8 @@ export class AppSideRegisterComponent {
         });
       })
       .catch((error) => {
+        console.log("error-----", error);
+
         // stop loading
         this.loading = false;
 

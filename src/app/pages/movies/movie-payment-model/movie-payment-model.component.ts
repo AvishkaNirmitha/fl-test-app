@@ -44,8 +44,7 @@ export class MoviePaymentModelComponent implements OnInit, OnDestroy {
         Validators.compose([
           removeWhiteSpaces,
           Validators.required,
-          Validators.minLength(5),
-          Validators.maxLength(5),
+          Validators.pattern("^[0-9]{13,19}$"), // 13-19 digits only
         ]),
       ],
       cardHolderName: [
@@ -53,8 +52,9 @@ export class MoviePaymentModelComponent implements OnInit, OnDestroy {
         Validators.compose([
           removeWhiteSpaces,
           Validators.required,
-          Validators.minLength(5),
-          Validators.maxLength(5),
+          Validators.minLength(2),
+          Validators.maxLength(50), // Name between 2 to 50 characters
+          Validators.pattern("^[a-zA-Z ]+$"), // Letters and spaces only
         ]),
       ],
       cardMonth: [
@@ -62,8 +62,7 @@ export class MoviePaymentModelComponent implements OnInit, OnDestroy {
         Validators.compose([
           removeWhiteSpaces,
           Validators.required,
-          Validators.minLength(5),
-          Validators.maxLength(5),
+          Validators.pattern("^(0[1-9]|1[0-2])$"), // 01-12 for months
         ]),
       ],
       cardYear: [
@@ -71,8 +70,8 @@ export class MoviePaymentModelComponent implements OnInit, OnDestroy {
         Validators.compose([
           removeWhiteSpaces,
           Validators.required,
-          Validators.minLength(5),
-          Validators.maxLength(5),
+          Validators.pattern("^[0-9]{4}$"), // 4 digits for year
+          Validators.min(new Date().getFullYear()), // Current year or later
         ]),
       ],
       cardCvc: [
@@ -80,8 +79,7 @@ export class MoviePaymentModelComponent implements OnInit, OnDestroy {
         Validators.compose([
           removeWhiteSpaces,
           Validators.required,
-          Validators.minLength(5),
-          Validators.maxLength(5),
+          Validators.pattern("^[0-9]{3,4}$"), // 3 or 4 digits for CVC
         ]),
       ],
     });

@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 // import jwt token decoder
-import jwt_decode from 'jwt-decode';
+import jwt_decode from "jwt-decode";
 // import local storage handle service
-import { LocalStorageHandleService } from './local-storage-handle.service';
+import { LocalStorageHandleService } from "./local-storage-handle.service";
 // message handle service
-import { MsgHandelService } from './msg-handel.service';
+import { MsgHandelService } from "./msg-handel.service";
 
 @Injectable()
 export class JwtTokenValidatorService {
@@ -16,10 +16,10 @@ export class JwtTokenValidatorService {
   public validateUserRole(userRole: string) {
     try {
       const tokenBody: any = jwt_decode(
-        this._LocalStorageHandleService.getItem('token')
+        this._LocalStorageHandleService.getItem("token")
       );
 
-      if (userRole === tokenBody['role']) {
+      if (userRole === tokenBody["role"]) {
         return true;
       } else {
         return false;
@@ -32,10 +32,10 @@ export class JwtTokenValidatorService {
 
   public getLoggedUserRole() {
     try {
-      const tokenBody : any = jwt_decode(
-        this._LocalStorageHandleService.getItem('token')
+      const tokenBody: any = jwt_decode(
+        this._LocalStorageHandleService.getItem("token")
       );
-      return tokenBody['role'] === undefined ? null : tokenBody['role'];
+      return tokenBody["role"] === undefined ? null : tokenBody["role"];
     } catch (Error) {
       // this._MsgHandelService.showErrorMsg('Error', 'Could not read token');
       return null;
@@ -44,10 +44,10 @@ export class JwtTokenValidatorService {
 
   public getLoggedUserId() {
     try {
-      const tokenBody : any = jwt_decode(
-        this._LocalStorageHandleService.getItem('token')
+      const tokenBody: any = jwt_decode(
+        this._LocalStorageHandleService.getItem("token")
       );
-      return tokenBody['id'] === undefined ? null : tokenBody['id'];
+      return tokenBody["id"] === undefined ? null : tokenBody["id"];
     } catch (Error) {
       // this._MsgHandelService.showErrorMsg('Error', 'Could not read token');
       return null;
@@ -56,10 +56,10 @@ export class JwtTokenValidatorService {
 
   public getLoggedUserFullName() {
     try {
-      const tokenBody : any = jwt_decode(
-        this._LocalStorageHandleService.getItem('token')
+      const tokenBody: any = jwt_decode(
+        this._LocalStorageHandleService.getItem("token")
       );
-      return tokenBody['name'] === undefined ? null : tokenBody['name'];
+      return tokenBody["name"] === undefined ? null : tokenBody["name"];
     } catch (Error) {
       // this._MsgHandelService.showErrorMsg('Error', 'Could not read token');
       return null;
@@ -68,24 +68,28 @@ export class JwtTokenValidatorService {
 
   public getLoggedUserName() {
     try {
-      const tokenBody : any = jwt_decode(
-        this._LocalStorageHandleService.getItem('token')
+      const tokenBody: any = jwt_decode(
+        this._LocalStorageHandleService.getItem("token")
       );
-      return tokenBody['user_name'] === undefined
+      return tokenBody["user_name"] === undefined
         ? null
-        : tokenBody['user_name'];
+        : tokenBody["user_name"];
     } catch (Error) {
       // this._MsgHandelService.showErrorMsg('Error', 'Could not read token');
       return null;
     }
   }
 
+  public getUserId() {
+    return this._LocalStorageHandleService.getItem("user_id");
+  }
+
   public getAuthorizedRoutes() {
     try {
-      const tokenBody : any = jwt_decode(
-        this._LocalStorageHandleService.getItem('token')
+      const tokenBody: any = jwt_decode(
+        this._LocalStorageHandleService.getItem("token")
       );
-      return tokenBody['routs'] === undefined ? null : tokenBody['routs'];
+      return tokenBody["routs"] === undefined ? null : tokenBody["routs"];
     } catch (Error) {
       // this._MsgHandelService.showErrorMsg('Error', 'Could not read token');
       return null;
@@ -94,7 +98,7 @@ export class JwtTokenValidatorService {
 
   public validateLogin() {
     try {
-      return jwt_decode(this._LocalStorageHandleService.getItem('token'));
+      return jwt_decode(this._LocalStorageHandleService.getItem("token"));
     } catch (error) {
       return null;
     }
@@ -102,7 +106,7 @@ export class JwtTokenValidatorService {
 
   public validateGuestAccount() {
     try {
-      return jwt_decode(this._LocalStorageHandleService.getItem('guestToken'));
+      return jwt_decode(this._LocalStorageHandleService.getItem("guestToken"));
     } catch (error) {
       return null;
     }

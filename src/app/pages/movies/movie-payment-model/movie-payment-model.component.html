@@ -19,6 +19,7 @@
     <div class="col-sm-7">
       <div class="form-wrapper">
         <form role="form" [formGroup]="rForm">
+          <!-- Card Number -->
           <div class="">
             <mat-form-field appearance="outline" class="w-100" color="primary">
               <input
@@ -27,19 +28,19 @@
                 type="text"
                 formControlName="cardNumber"
               />
-
               <mat-error
                 *ngIf="
-                       !rForm.controls['cardNumber'].valid &&
-                        (rForm.controls['cardNumber']?.errors?.['maxlength'] ||
-                        rForm.controls['cardNumber']?.errors?.['minlength']) &&
-                        rForm.controls['cardNumber']?.touched
-                    "
-                >Valid card number is required</mat-error
+                  !rForm.controls['cardNumber'].valid &&
+                  rForm.controls['cardNumber']?.errors?.['pattern'] &&
+                  rForm.controls['cardNumber'].touched
+                "
               >
+                Card number must be 13-19 digits long
+              </mat-error>
             </mat-form-field>
           </div>
 
+          <!-- Card Holder Name -->
           <div class="">
             <mat-form-field appearance="outline" class="w-100" color="primary">
               <input
@@ -48,19 +49,42 @@
                 type="text"
                 formControlName="cardHolderName"
               />
-
               <mat-error
                 *ngIf="
-                       !rForm.controls['cardHolderName'].valid &&
-                        (rForm.controls['cardHolderName']?.errors?.['maxlength'] ||
-                        rForm.controls['cardHolderName']?.errors?.['minlength']) &&
-                        rForm.controls['cardHolderName']?.touched
-                    "
-                >Valid card holder name is required</mat-error
+                  rForm.controls['cardHolderName'].hasError('required') &&
+                  rForm.controls['cardHolderName'].touched
+                "
               >
+                Card holder name is required
+              </mat-error>
+              <mat-error
+                *ngIf="
+                  rForm.controls['cardHolderName'].hasError('minlength') &&
+                  rForm.controls['cardHolderName'].touched
+                "
+              >
+                Name must be at least 2 characters long
+              </mat-error>
+              <mat-error
+                *ngIf="
+                  rForm.controls['cardHolderName'].hasError('maxlength') &&
+                  rForm.controls['cardHolderName'].touched
+                "
+              >
+                Name cannot be more than 50 characters long
+              </mat-error>
+              <mat-error
+                *ngIf="
+                  rForm.controls['cardHolderName'].hasError('pattern') &&
+                  rForm.controls['cardHolderName'].touched
+                "
+              >
+                Name can only contain letters and spaces
+              </mat-error>
             </mat-form-field>
           </div>
 
+          <!-- Card Expiry Date (Month and Year) -->
           <div class="row">
             <div class="col-4 pr-0">
               <div class="">
@@ -75,6 +99,15 @@
                     type="text"
                     formControlName="cardMonth"
                   />
+                  <mat-error
+                    *ngIf="
+                      !rForm.controls['cardMonth'].valid &&
+                      rForm.controls['cardMonth']?.errors?.['pattern'] &&
+                      rForm.controls['cardMonth'].touched
+                    "
+                  >
+                    Month must be between 01 and 12
+                  </mat-error>
                 </mat-form-field>
               </div>
             </div>
@@ -91,6 +124,15 @@
                     type="text"
                     formControlName="cardYear"
                   />
+                  <mat-error
+                    *ngIf="
+                      !rForm.controls['cardYear'].valid &&
+                      rForm.controls['cardYear']?.errors?.['min'] &&
+                      rForm.controls['cardYear'].touched
+                    "
+                  >
+                    Year must be the current year or later
+                  </mat-error>
                 </mat-form-field>
               </div>
             </div>
@@ -107,13 +149,22 @@
                     type="text"
                     formControlName="cardCvc"
                   />
+                  <mat-error
+                    *ngIf="
+                      !rForm.controls['cardCvc'].valid &&
+                      rForm.controls['cardCvc']?.errors?.['pattern'] &&
+                      rForm.controls['cardCvc'].touched
+                    "
+                  >
+                    CVC must be 3 or 4 digits
+                  </mat-error>
                 </mat-form-field>
               </div>
             </div>
           </div>
 
+          <!-- Submit Button -->
           <hr />
-
           <button
             type="submit"
             mat-flat-button
@@ -122,7 +173,7 @@
             (click)="createTicket()"
             [disabled]="!rForm.valid"
           >
-            proceed to checkout
+            Proceed to Checkout
           </button>
         </form>
       </div>

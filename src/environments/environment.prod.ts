@@ -1,5 +1,6 @@
 export const environment = {
   production: true,
+  imdb_api: "https://imdb188.p.rapidapi.com/api/v1/getFanFavorites?country=US",
 
   firebaseConfig: {
     apiKey: "AIzaSyAvu-2l2H18brjWy6qm74ItBUPR0Epk8uw",

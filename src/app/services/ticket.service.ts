@@ -12,6 +12,10 @@ import { Observable } from "rxjs";
 
 import { query, where } from "@angular/fire/firestore";
 import { JwtTokenValidatorService } from "./jwt-token-validator.service";
+import { MainService } from "../infrastructure/api.service";
+import { catchError, map } from "rxjs/operators";
+import { environment } from "src/environments/environment";
+
 @Injectable({
   providedIn: "root",
 })
@@ -19,7 +23,8 @@ export class TicketService {
   constructor(
     private firestore: Firestore,
     private auth: Auth,
-    private JwtTokenValidatorService: JwtTokenValidatorService
+    private JwtTokenValidatorService: JwtTokenValidatorService,
+    private _MainService: MainService
   ) {}
 
   // Method to create a new ticket
@@ -33,24 +38,8 @@ export class TicketService {
       throw new Error("User is not logged in");
     }
 
-    // Creating a ticket with the user's UID
-    // return addDoc(ticketsCollection, { uid: user?.uid });
     return addDoc(ticketsCollection, { uid: user?.uid, ...data });
   }
-
-  // Method to retrieve all tickets for the logged-in user
-  // getUserTickets(): Observable<any[]> {
-  //   const user = this.auth.currentUser;
-
-  //   // if (!user) {
-  //   //   throw new Error("User is not logged in");
-  //   // }
-
-  //   const ticketsCollection = collection(this.firestore, "tickets");
-  //   return collectionData(ticketsCollection, { idField: "id" }) as Observable<
-  //     any[]
-  //   >;
-  // }
 
   getUserTickets(): Observable<any[]> {
     const ticketsCollection = collection(this.firestore, "tickets");
@@ -65,5 +54,16 @@ export class TicketService {
     return collectionData(userTicketsQuery, { idField: "id" }) as Observable<
       any[]
     >;
+  }
+
+  getMovies(): Observable<any> {
+    return this._MainService.get(environment.imdb_api, true).pipe(
+      map((data) => {
+        return data;
+      }),
+      catchError((res) => {
+        throw res;
+      })
+    );
   }
 }

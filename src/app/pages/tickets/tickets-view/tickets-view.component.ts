@@ -64,6 +64,7 @@ export class TicketsViewComponent {
       },
       (error) => {
         this.loading = true;
+        this._MsgHandelService.handleFirebaseError(error);
         console.error("Error retrieving tickets:", error);
       }
     );

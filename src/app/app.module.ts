@@ -34,7 +34,13 @@ import { LocalStorageHandleService } from "./services/local-storage-handle.servi
 import { ToastrModule } from "ngx-toastr";
 import { sweetAlertConfig } from "src/assets/configs/sweetAlertConfig";
 import { SharedModule } from "./shared/shared/shared.module";
-import { AdminService } from "./services/admin.service";
+import { environment } from "src/environments/environment";
+import { AngularFireModule } from "@angular/fire/compat";
+
+import { provideFirebaseApp, initializeApp } from "@angular/fire/app";
+import { provideAuth, getAuth } from "@angular/fire/auth";
+
+import { provideFirestore, getFirestore } from "@angular/fire/firestore";
 
 @NgModule({
   declarations: [
@@ -58,6 +64,10 @@ import { AdminService } from "./services/admin.service";
     NgScrollbarModule,
     ToastrModule.forRoot(sweetAlertConfig),
     SharedModule,
+    // AngularFireModule.initializeApp(environment.firebaseConfig),
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()),
   ],
   exports: [TablerIconsModule],
   bootstrap: [AppComponent],
@@ -69,8 +79,7 @@ import { AdminService } from "./services/admin.service";
     MsgHandelService,
     JwtTokenValidatorService,
     LocalStorageHandleService,
-    AdminService,
-    JwtService
+    JwtService,
   ],
 })
 export class AppModule {}

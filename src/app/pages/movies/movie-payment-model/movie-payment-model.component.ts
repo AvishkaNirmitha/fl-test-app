@@ -9,10 +9,9 @@ import { GlobalService } from "src/app/services/global.service";
 import { JwtTokenValidatorService } from "src/app/services/jwt-token-validator.service";
 import { MsgHandelService } from "src/app/services/msg-handel.service";
 import { UserService } from "src/app/services/user.service";
-import { WalletService } from "src/app/services/wallet.service";
 import { ConfirmDialogComponent } from "src/app/shared/confirm-dialog/confirm-dialog.component";
-import { WithdrawModelComponent } from "../../wallet/withdraw-model/withdraw-model.component";
 import { removeWhiteSpaces } from "src/app/services/validations/validator";
+import { TicketService } from "src/app/services/ticket.service";
 
 @Component({
   selector: "app-movie-payment-model",
@@ -22,15 +21,15 @@ import { removeWhiteSpaces } from "src/app/services/validations/validator";
 export class MoviePaymentModelComponent implements OnInit, OnDestroy {
   loading: Boolean = false;
 
-  ticketPrice = {
-    halfTicketPrice: 150,
-    fullTicketPrice: 300,
-  };
+  // ticketPrice = {
+  //   halfTicketPrice: 150,
+  //   fullTicketPrice: 300,
+  // };
 
   rForm: FormGroup;
 
   constructor(
-    private dialogRef: MatDialogRef<WithdrawModelComponent>,
+    private dialogRef: MatDialogRef<MoviePaymentModelComponent>,
     @Inject(MAT_DIALOG_DATA) public parentData: any,
     private _FormBuilder: FormBuilder,
 
@@ -38,8 +37,8 @@ export class MoviePaymentModelComponent implements OnInit, OnDestroy {
     private _JwtTokenValidatorService: JwtTokenValidatorService,
     private _MsgHandelService: MsgHandelService,
     private globalService: GlobalService,
-    private walletService: WalletService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private ticketService: TicketService
   ) {
     this.rForm = this._FormBuilder.group({
       cardNumber: [
@@ -87,64 +86,14 @@ export class MoviePaymentModelComponent implements OnInit, OnDestroy {
           Validators.maxLength(5),
         ]),
       ],
-
-      // cardNumber: [
-      //   null,
-      //   Validators.compose([
-      //     removeWhiteSpaces,
-      //     Validators.required,
-      //     Validators.minLength(42),
-      //     Validators.maxLength(42),
-      //   ]),
-      // ],
-
-      // HalfSeatCount: [
-      //   null,
-      //   Validators.compose([
-      //     Validators.required,
-      //     Validators.min(1),
-      //     Validators.max(100),
-      //   ]),
-      // ],
-
-      // bookDate: [null, Validators.required],
     });
   }
 
   ngOnInit(): void {
-    console.log("parentData", this.parentData);
+    console.log("parentData", this.parentData?.data);
   }
 
   ngOnDestroy(): void {}
-
-  handleWithdraw() {
-    this.loading = true;
-    this.walletService
-      .createWithdrawalRequest({
-        // user_id: this.userService.getCurrentUserId(),
-        // address: this.rForm.value?.withdraw_address,
-        // amount: this.rForm.value?.amount,
-        // verification_code: this.rForm.value?.twoFa_auth_code,
-      })
-      .subscribe(
-        (response) => {
-          this.loading = false;
-          if (response.status) {
-            this._MsgHandelService.showSuccessMsg(
-              "",
-              "Successfully created your withdrawal request"
-            );
-            this.dialogRef.close({
-              status: true,
-            });
-          }
-        },
-        (error) => {
-          this.loading = false;
-          this._MsgHandelService.handleError(error);
-        }
-      );
-  }
 
   public closeModel() {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -166,16 +115,26 @@ export class MoviePaymentModelComponent implements OnInit, OnDestroy {
     });
   }
 
-  calTotal() {
-    // const fullSeats = this.rForm.value?.fullSeatCount
-    //   ? this.rForm.value?.fullSeatCount
-    //   : 0;
-    // const halfSeats = this.rForm.value?.HalfSeatCount
-    //   ? this.rForm.value?.HalfSeatCount
-    //   : 0;
-    // return (
-    //   fullSeats * this.ticketPrice.fullTicketPrice +
-    //   halfSeats * this.ticketPrice.halfTicketPrice
-    // );
+  calTotal() {}
+
+  createTicket() {
+    console.log(this.parentData.data);
+    // return;
+
+    this.loading = true;
+    this.ticketService
+      .createTicket(this.parentData.data)
+      .then((response) => {
+        this.loading = false;
+        console.log("Ticket created successfully!", response);
+
+        this.dialogRef.close({
+          status: true,
+        });
+      })
+      .catch((error) => {
+        this.loading = false;
+        console.error("Error creating ticket:", error);
+      });
   }
 }

@@ -10,10 +10,8 @@ import { JwtTokenValidatorService } from "src/app/services/jwt-token-validator.s
 import { MsgHandelService } from "src/app/services/msg-handel.service";
 import { UserService } from "src/app/services/user.service";
 import { removeWhiteSpaces } from "src/app/services/validations/validator";
-import { WalletService } from "src/app/services/wallet.service";
 import { ConfirmDialogComponent } from "src/app/shared/confirm-dialog/confirm-dialog.component";
 import { environment } from "src/environments/environment";
-import { WithdrawModelComponent } from "../../wallet/withdraw-model/withdraw-model.component";
 import { MoviePaymentModelComponent } from "../movie-payment-model/movie-payment-model.component";
 
 @Component({
@@ -31,8 +29,14 @@ export class MovieBookingModelComponent implements OnInit, OnDestroy {
 
   rForm: FormGroup;
 
+  foods: any = [
+    { value: "steak-0", viewValue: "Steak" },
+    { value: "pizza-1", viewValue: "Pizza" },
+    { value: "tacos-2", viewValue: "Tacos" },
+  ];
+
   constructor(
-    private dialogRef: MatDialogRef<WithdrawModelComponent>,
+    private dialogRef: MatDialogRef<MovieBookingModelComponent>,
     @Inject(MAT_DIALOG_DATA) public parentData: any,
     private _FormBuilder: FormBuilder,
 
@@ -40,7 +44,6 @@ export class MovieBookingModelComponent implements OnInit, OnDestroy {
     private _JwtTokenValidatorService: JwtTokenValidatorService,
     private _MsgHandelService: MsgHandelService,
     private globalService: GlobalService,
-    private walletService: WalletService,
     public dialog: MatDialog
   ) {
     this.rForm = this._FormBuilder.group({
@@ -48,18 +51,19 @@ export class MovieBookingModelComponent implements OnInit, OnDestroy {
         null,
         Validators.compose([
           Validators.required,
-          Validators.min(1),
-          Validators.max(100),
+          // Validators.min(1),
+          // Validators.max(100),
         ]),
       ],
       HalfSeatCount: [
         null,
         Validators.compose([
           Validators.required,
-          Validators.min(1),
-          Validators.max(100),
+          // Validators.min(1),
+          // Validators.max(100),
         ]),
       ],
+      showTime: [1, Validators.compose([Validators.required])],
 
       bookDate: [null, Validators.required],
     });
@@ -70,39 +74,6 @@ export class MovieBookingModelComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {}
-
-  handleWithdraw() {
-    this.openCardPayment();
-
-    return;
-
-    this.loading = true;
-    this.walletService
-      .createWithdrawalRequest({
-        // user_id: this.userService.getCurrentUserId(),
-        // address: this.rForm.value?.withdraw_address,
-        // amount: this.rForm.value?.amount,
-        // verification_code: this.rForm.value?.twoFa_auth_code,
-      })
-      .subscribe(
-        (response) => {
-          this.loading = false;
-          if (response.status) {
-            this._MsgHandelService.showSuccessMsg(
-              "",
-              "Successfully created your withdrawal request"
-            );
-            this.dialogRef.close({
-              status: true,
-            });
-          }
-        },
-        (error) => {
-          this.loading = false;
-          this._MsgHandelService.handleError(error);
-        }
-      );
-  }
 
   public closeModel() {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -138,19 +109,39 @@ export class MovieBookingModelComponent implements OnInit, OnDestroy {
   }
 
   openCardPayment() {
+    const date = new Date("Wed Oct 16 2024 00:00:00 GMT+0530");
+    const isoDate = date.toISOString();
+    console.log(isoDate); // Output: 2024-10-15T18:30:00.000Z
+
     const dialogRef = this.dialog.open(MoviePaymentModelComponent, {
       width: "45vw",
       maxHeight: "85vh",
       autoFocus: false,
       disableClose: true,
       data: {
-        userDetails: {},
+        data: {
+          full_ticket_count: this.rForm.value?.fullSeatCount,
+          half_ticket_count: this.rForm.value?.HalfSeatCount,
+          book_date: new Date(this.rForm.value?.bookDate).toISOString(),
+          show_time: this.rForm.value?.showTime,
+          movie_name: this.parentData?.data?.name
+            ? this.parentData?.data?.name
+            : "movie",
+          movie_image: this.parentData?.data?.image
+            ? this.parentData?.data?.image
+            : "movie image",
+          price: this.calTotal(),
+          // this.parentData?.data
+        },
       },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result != undefined) {
         if (result.status) {
+          this.dialogRef.close({
+            status: true,
+          });
         }
       }
     });

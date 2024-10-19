@@ -2,7 +2,6 @@ import { Routes } from "@angular/router";
 
 import { AppSideLoginComponent } from "./login/login.component";
 import { AppSideRegisterComponent } from "./register/register.component";
-import { AdminComponent } from "./admin/admin.component";
 import { PublicGuardService } from "src/app/infrastructure/public-guard.service";
 import { ForgotPasswordComponent } from "./forgot-password/forgot-password.component";
 
@@ -29,10 +28,6 @@ export const AuthenticationRoutes: Routes = [
         path: "signup/:id",
         component: AppSideRegisterComponent,
         canActivate: [PublicGuardService],
-      },
-      {
-        path: "admin",
-        component: AdminComponent,
       },
     ],
   },

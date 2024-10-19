@@ -9,15 +9,15 @@
   ></i>
 </div>
 <h1 class="font-1-6 header-title text-center mb-4">
-  Book Transformers One Movie
+  Watch {{ this.parentData.data?.name }}
 </h1>
 
 <div class="font-1 mb-4 pl-4 pr-4">
   <div class="row">
     <div class="col-5">
       <img
-        src="https://lk-aps.bmscdn.com/iedb/movies/images/mobile/thumbnail/xlarge/transformers-one-et00005460-06-09-2024-05-51-05.jpg"
-        class="w-100"
+        [src]="this.parentData.data?.image"
+        class="w-100 movie-card-img"
         alt=""
       />
     </div>
@@ -27,60 +27,47 @@
         <form role="form" [formGroup]="rForm">
           <div class="mt-1">
             <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">
-              Full Ticket Count<span class="required-icon">*</span></mat-label
-            >
+              Full Ticket Count<span class="required-icon">*</span>
+            </mat-label>
             <mat-form-field appearance="outline" class="w-100" color="primary">
-              <input
-                matInput
-                placeholder="Enter Full Ticket Count"
-                type="number"
-                formControlName="fullSeatCount"
-                autocomplete="new-password"
-              />
+              <mat-select formControlName="fullSeatCount">
+                <mat-option value="1"> 1</mat-option>
+                <mat-option value="2"> 2</mat-option>
+                <mat-option value="3"> 3</mat-option>
+                <mat-option value="4"> 4 </mat-option>
+              </mat-select>
 
               <mat-error
                 *ngIf="
-              rForm.controls['fullSeatCount']?.errors?.['required'] &&
+                    rForm.controls['fullSeatCount']?.errors?.['required'] &&
                     rForm.controls['fullSeatCount']?.touched
                   "
-                >Full Ticket Count is required</mat-error
               >
-              <mat-error
-                *ngIf=" (rForm.controls['fullSeatCount']?.errors?.['min'] ||
-                  rForm.controls['fullSeatCount']?.errors?.['max']) &&
-                rForm.controls['fullSeatCount']?.touched"
-              >
-                Full Ticket Count should be 1 to 100</mat-error
+                Full Ticket Count is required</mat-error
               >
             </mat-form-field>
           </div>
 
           <div class="mt-1">
             <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">
-              Half Ticket Count<span class="required-icon">*</span></mat-label
-            >
+              Half Ticket Count<span class="required-icon">*</span>
+            </mat-label>
             <mat-form-field appearance="outline" class="w-100" color="primary">
-              <input
-                matInput
-                placeholder="Enter Half Ticket Count"
-                type="number"
-                formControlName="HalfSeatCount"
-                autocomplete="new-password"
-              />
+              <mat-select formControlName="HalfSeatCount">
+                <mat-option value="undefined"> select</mat-option>
+                <mat-option value="1"> 1</mat-option>
+                <mat-option value="2"> 2</mat-option>
+                <mat-option value="3"> 3</mat-option>
+                <mat-option value="4"> 4 </mat-option>
+              </mat-select>
 
               <mat-error
                 *ngIf="
-              rForm.controls['HalfSeatCount']?.errors?.['required'] &&
+                    rForm.controls['HalfSeatCount']?.errors?.['required'] &&
                     rForm.controls['HalfSeatCount']?.touched
                   "
-                >Half Ticket Count is required</mat-error
               >
-              <mat-error
-                *ngIf=" (rForm.controls['HalfSeatCount']?.errors?.['min'] ||
-                  rForm.controls['HalfSeatCount']?.errors?.['max']) &&
-                rForm.controls['HalfSeatCount']?.touched"
-              >
-                Half Ticket Count should be 1 to 100</mat-error
+                Show time is required</mat-error
               >
             </mat-form-field>
           </div>
@@ -114,6 +101,29 @@
             </mat-form-field>
           </div>
 
+          <div class="mt-1">
+            <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block">
+              Show Time<span class="required-icon">*</span>
+            </mat-label>
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <mat-select formControlName="showTime">
+                <mat-option value="8 AM - 10 PM"> 8 AM - 10 PM </mat-option>
+                <mat-option value="10 AM - 12 PM"> 10 AM - 12 PM </mat-option>
+                <mat-option value="01 PM - 3 PM "> 01 PM - 3 PM </mat-option>
+                <mat-option value="6PM PM - 8 PM"> 6PM PM - 8 PM </mat-option>
+              </mat-select>
+
+              <mat-error
+                *ngIf="
+                    rForm.controls['showTime']?.errors?.['required'] &&
+                    rForm.controls['showTime']?.touched
+                  "
+              >
+                Show time is required</mat-error
+              >
+            </mat-form-field>
+          </div>
+
           <hr />
 
           <div class="d-flex justify-content-between mb-3 mt-1">
@@ -129,7 +139,7 @@
             mat-flat-button
             color="primary"
             class="w-100"
-            (click)="handleWithdraw()"
+            (click)="openCardPayment()"
             [disabled]="!rForm.valid && false"
           >
             proceed to checkout

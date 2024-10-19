@@ -5,9 +5,9 @@ export const navItems: NavItem[] = [
     navCap: "Home",
   },
   {
-    displayName: "Dashboard",
+    displayName: "Movies",
     iconName: "layout-dashboard",
-    route: "/dashboard",
+    route: "/movies",
   },
   // {
   //   navCap: 'Ui Components',
@@ -63,16 +63,16 @@ export const navItems: NavItem[] = [
   //   iconName: 'aperture',
   //   route: '/extra/sample-page',
   // },
-  {
-    displayName: "Wallet",
-    iconName: "wallet",
-    route: "/wallet",
-  },
-  {
-    displayName: "Referrals",
-    iconName: "user-bolt",
-    route: "/referrals",
-  },
+  // {
+  //   displayName: "Wallet",
+  //   iconName: "wallet",
+  //   route: "/wallet",
+  // },
+  // {
+  //   displayName: "Referrals",
+  //   iconName: "user-bolt",
+  //   route: "/referrals",
+  // },
   // {
   //   displayName: "Transactions",
   //   iconName: "cash",
@@ -83,24 +83,24 @@ export const navItems: NavItem[] = [
   //   iconName: "coins",
   //   route: "/earnings",
   // },
+  // {
+  //   displayName: "Deposit history",
+  //   iconName: "history",
+  //   route: "/deposit-history",
+  // },
+  // {
+  //   displayName: "Investments",
+  //   iconName: "building-bank",
+  //   route: "/investment",
+  // },
+  // {
+  //   displayName: "Your packages",
+  //   iconName: "package",
+  //   route: "/your-packages",
+  // },
   {
-    displayName: "Deposit history",
-    iconName: "history",
-    route: "/deposit-history",
-  },
-  {
-    displayName: "Investments",
-    iconName: "building-bank",
-    route: "/investment",
-  },
-  {
-    displayName: "Your packages",
-    iconName: "package",
-    route: "/your-packages",
-  },
-  {
-    displayName: "Withdrawals",
+    displayName: "purchase history",
     iconName: "coins",
-    route: "/withdrawals",
+    route: "/tickets",
   },
 ];

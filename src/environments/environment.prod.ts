@@ -1,10 +1,10 @@
-const url = '167.172.81.38';
-const port = '7100';
-const serverProtocol = 'http';
+const url = "167.172.81.38";
+const port = "7100";
+const serverProtocol = "http";
 
 export const environment = {
   production: true,
-  site_name: "28xClub",
+  site_name: "Ticketer",
   api_url: `${serverProtocol}://${url}:${port}/api/`,
   rest_countries_api: `https://restcountries.com/v3.1/all`,
   rest_cities_api: `https://countriesnow.space/api/v0.1/`,
@@ -33,9 +33,7 @@ export const environment = {
     },
     pro: {
       user_type: "pro",
-      accepted_domains: [
-       
-      ],
+      accepted_domains: [],
     },
   },
   network_chain_id: "1", // Eth

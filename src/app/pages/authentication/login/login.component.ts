@@ -19,6 +19,7 @@ import {
 
 import { pureEmail } from "../../../services/validations/validator";
 import { UserService } from "src/app/services/user.service";
+import { FirebaseService } from "src/app/services/firebase.service";
 
 @Component({
   selector: "app-login",
@@ -31,7 +32,6 @@ export class AppSideLoginComponent {
   authCodeForm: FormGroup;
   loading: boolean = false;
   password_eye_icon: boolean = false;
-  activeTab: number = 1;
   authCodeFocus: boolean = false;
   loggedResponse: any = null;
 
@@ -43,7 +43,8 @@ export class AppSideLoginComponent {
     private _MsgHandelService: MsgHandelService,
     // private _DomManipulationService: DomManipulationService,
     private _LocalStorageHandleService: LocalStorageHandleService,
-    private userService: UserService
+    private userService: UserService,
+    private firebaseService: FirebaseService
   ) {
     // form data
     this.rForm = this._FormBuilder.group({
@@ -70,21 +71,7 @@ export class AppSideLoginComponent {
     });
   }
 
-  ngOnInit() {
-    //sign up page scroll to top
-    // this._DomManipulationService.scrollToTop();
-
-    /**
-     * redirect to dashboard if the user is already logged in
-     */
-    if (this._JwtService.getToken()) {
-      // this._Router.navigateByUrl("/initial");
-      // this._NavBarService.setRedirectDashboardStatus({
-      //   status: true,
-      //   data: {},
-      // });
-    }
-  }
+  ngOnInit() {}
 
   get authCode(): AbstractControl {
     return <AbstractControl>this.authCodeForm.get("authCode");
@@ -94,78 +81,61 @@ export class AppSideLoginComponent {
     const userObj = {
       email: this.rForm.controls["email"].value,
       password: this.rForm.controls["password"].value,
-      // user_type: this._AuthService.generateUserTypeFromDomain(),
-      // user_type: "pro",
     };
-    // this._MsgHandelService.showErrorMsg('',"dsasdas dsadasd");
     this.loading = true;
-    this._AuthService.loginUser(userObj).subscribe(
-      (response) => {
-        if (response.status) {
-          if (!response?.data?.two_factor_auth_enabled) {
-            this.loginFromResponse(response);
-          } else {
-            this.activeTab = 2;
-            this.loggedResponse = response;
-          }
-        }
-        this.loading = false;
-      },
-      (error) => {
-        this.loading = false;
-        // show msg
+
+    this.firebaseService
+      .login(userObj?.email, userObj?.password)
+      .then((response) => {
+        console.log("Login successful!", response);
+
+        response.user.getIdToken().then((idToken) => {
+          // store token
+          this._JwtService.saveToken(idToken);
+
+          this._LocalStorageHandleService.saveItem({
+            name: "user_id",
+            value: response.user.uid,
+          });
+
+          // this._MsgHandelService.showSuccessMsg("", "Successfully signed in");
+          // load the home
+          this._Router.navigateByUrl("/movies");
+        });
+      })
+      .catch((error) => {
+        console.error("Login error:", error);
+
         this._MsgHandelService.handleError(error);
-      }
-    );
+      });
   };
 
-  verifyCode() {
-    const code = this.authCodeForm.get("authCode")?.value;
-    if (!code || !this.loggedResponse?.data?._id || !this.loggedResponse?.token)
-      return;
-
+  public loginWithGoogle() {
     this.loading = true;
-    this.userService
-      .verifyTwoFactorAuth(
-        this.loggedResponse?.data?._id,
-        code.toString(),
-        this.loggedResponse?.token
-      )
-      .subscribe(
-        (data) => {
-          if (data.status && data.data) {
-            this.loginFromResponse(this.loggedResponse);
-          }
-          this.loading = false;
-        },
-        (error) => {
-          this.loading = false;
-          this._MsgHandelService.showErrorMsg("", error?.msg);
-        }
-      );
-  }
 
-  loginFromResponse(response: any) {
-    // store token
-    this._JwtService.saveToken(response?.token);
+    this.firebaseService
+      .loginWithGoogle()
+      .then((response) => {
+        console.log("Login successful!", response);
 
-    this._LocalStorageHandleService.saveItem({
-      name: "referral_code",
-      value: response["data"]["referral_code"],
-    });
+        response.user.getIdToken().then((idToken) => {
+          // store token
+          this._JwtService.saveToken(idToken);
 
-    this._LocalStorageHandleService.saveItem({
-      name: "user_id",
-      value: response["data"]["_id"],
-    });
+          this._LocalStorageHandleService.saveItem({
+            name: "user_id",
+            value: response.user.uid,
+          });
 
-    this._MsgHandelService.showSuccessMsg("", "Successfully signed in");
-    // load the home
-    this._Router.navigateByUrl("/dashboard");
+          // this._MsgHandelService.showSuccessMsg("", "Successfully signed in");
+          // load the home
+          this._Router.navigateByUrl("/movies");
+        });
+      })
+      .catch((error) => {
+        console.error("Login error:", error);
 
-    // this._NavBarService.setRedirectDashboardStatus({
-    //   status: true,
-    //   data: {},
-    // });
+        this._MsgHandelService.handleError(error);
+      });
   }
 }

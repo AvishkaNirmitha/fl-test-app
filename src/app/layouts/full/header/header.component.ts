@@ -9,7 +9,6 @@ import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { LocalStorageHandleService } from "src/app/services/local-storage-handle.service";
 import { MsgHandelService } from "src/app/services/msg-handel.service";
-import { XtrRateService } from "src/app/services/xtr-rate.service";
 import { ConfirmDialogComponent } from "src/app/shared/confirm-dialog/confirm-dialog.component";
 
 @Component({
@@ -25,19 +24,15 @@ export class HeaderComponent {
   @Output() toggleCollapsed = new EventEmitter<void>();
 
   showFiller = false;
-  xtr_rate = 0;
 
   constructor(
     public dialog: MatDialog,
     private _LocalStorageHandleService: LocalStorageHandleService,
     private _MsgHandelService: MsgHandelService,
-    private xtrRateService: XtrRateService,
     private router: Router
   ) {}
 
-  ngOnInit(): void {
-    this.getXTRRate();
-  }
+  ngOnInit(): void {}
 
   logOut(): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
@@ -59,19 +54,5 @@ export class HeaderComponent {
         }
       }
     });
-  }
-
-  private getXTRRate() {
-    this.xtrRateService.getXtrRate().subscribe(
-      (response) => {
-        if (response.status) {
-          this.xtr_rate = response?.data?.price ? response?.data?.price : 0;
-        }
-      },
-      (error) => {
-        // this.loading = false;
-        this._MsgHandelService.handleError(error);
-      }
-    );
   }
 }

@@ -1,24 +1,24 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { AdminService } from 'src/app/services/admin.service';
-import { JwtTokenValidatorService } from 'src/app/services/jwt-token-validator.service';
-import { JwtService } from 'src/app/services/jwt.service';
-import { LocalStorageHandleService } from 'src/app/services/local-storage-handle.service';
-import { MsgHandelService } from 'src/app/services/msg-handel.service';
-import { UserService } from 'src/app/services/user.service';
+import { Component } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Subscription } from "rxjs";
+import { AdminService } from "src/app/services/admin.service";
+import { JwtTokenValidatorService } from "src/app/services/jwt-token-validator.service";
+import { JwtService } from "src/app/services/jwt.service";
+import { LocalStorageHandleService } from "src/app/services/local-storage-handle.service";
+import { MsgHandelService } from "src/app/services/msg-handel.service";
+import { UserService } from "src/app/services/user.service";
 import {
   IS_ADMIN_AS_USER,
   USER_ROUTE,
   USER_IP,
   USER_PORT,
   USER_PROTOCOL,
-} from 'src/assets/configs/localstorage.config';
+} from "src/assets/configs/localstorage.config";
 
 @Component({
-  selector: 'app-admin',
-  templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.scss']
+  selector: "app-admin",
+  templateUrl: "./admin.component.html",
+  styleUrls: ["./admin.component.scss"],
 })
 export class AdminComponent {
   loading: boolean = false;
@@ -33,19 +33,20 @@ export class AdminComponent {
     private _Router: Router,
     private _JwtTokenValidatorService: JwtTokenValidatorService,
     private _MsgHandelService: MsgHandelService,
-    private _jwtService : JwtService
-  ) {
-
-  }
+    private _jwtService: JwtService
+  ) {}
   ngOnInit(): void {
     this.routerSubscription = this.router.queryParams.subscribe((params) => {
-      const userToken = params['userToken'];
+      const userToken = params["userToken"];
 
       if (userToken) {
         window.localStorage.clear();
         this.verifyToken(userToken);
-      }else{
-        this._MsgHandelService.showErrorMsg("Warning!", "Token Not Found. Please try again")
+      } else {
+        this._MsgHandelService.showErrorMsg(
+          "Warning!",
+          "Token Not Found. Please try again"
+        );
       }
     });
   }
@@ -54,7 +55,7 @@ export class AdminComponent {
     this.routerSubscription.unsubscribe();
   }
 
-  verifyToken(userToken: string = '') {
+  verifyToken(userToken: string = "") {
     this.loading = true;
     this._LocalStorageHandleService.destroyAll();
     // verify user token
@@ -84,7 +85,7 @@ export class AdminComponent {
                 },
                 (error) => {
                   console.log(error);
-                  
+
                   this.loading = false;
                   this.displayError = { status: true };
                   this._MsgHandelService.handleError(error);
@@ -102,11 +103,11 @@ export class AdminComponent {
       );
   }
 
-  loginUser(response : any) {
+  loginUser(response: any) {
     // store referral code
     this._LocalStorageHandleService.saveItem({
-      name: 'referral_code',
-      value: response['data']['referral_code'],
+      name: "referral_code",
+      value: response["data"]["referral_code"],
     });
 
     this._LocalStorageHandleService.saveItem({
@@ -121,9 +122,9 @@ export class AdminComponent {
     });
 
     // show success message
-    this._MsgHandelService.showSuccessMsg('', 'Successfully signed in');
+    this._MsgHandelService.showSuccessMsg("", "Successfully signed in");
     // load the dashboard
-    this._Router.navigateByUrl('/dashboard');
+    this._Router.navigateByUrl("/movies");
 
     this.loading = false;
   }

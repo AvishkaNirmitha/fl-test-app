@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { FirebaseServerApp } from "@angular/fire/app";
 import {
   FormGroup,
   FormControl,
@@ -10,6 +11,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { Subscription } from "rxjs";
 import { JwtService } from "src/app/infrastructure/jwt.service";
 import { AuthService } from "src/app/services/authentication.service";
+import { FirebaseService } from "src/app/services/firebase.service";
 import { LocalStorageHandleService } from "src/app/services/local-storage-handle.service";
 import { MsgHandelService } from "src/app/services/msg-handel.service";
 import { UserService } from "src/app/services/user.service";
@@ -51,6 +53,7 @@ export class AppSideRegisterComponent {
     private route: ActivatedRoute,
     private _AuthService: AuthService,
     private _MsgHandelService: MsgHandelService,
+    private firebaseService: FirebaseService,
     // private _DomManipulationService: DomManipulationService,
     private _LocalStorageHandleService: LocalStorageHandleService,
     private userService: UserService
@@ -100,55 +103,45 @@ export class AppSideRegisterComponent {
   }
 
   public registerUser = () => {
-    // create user object
-    const userObj: any = {
-      name: this.rForm.controls["name"].value,
+    const userobj = {
       email: this.rForm.controls["email"].value,
       password: this.rForm.controls["password"].value,
     };
 
-    const loginObj = {
-      email: this.rForm.controls["email"].value,
-      password: this.rForm.controls["password"].value,
-    };
-
-    // stop loading
     this.loading = true;
-    this._AuthService.registerUser(userObj).subscribe(
-      (data) => {
-        this._AuthService.loginUser(loginObj).subscribe(
-          (response) => {
-            this.loading = false;
+    this.firebaseService
+      .register(userobj["email"], userobj["password"])
+      .then((response) => {
+        response.user.getIdToken().then((idToken) => {
+          console.log("Registration successful!", idToken);
 
-            // store token
-            this._JwtService.saveToken(response.token);
+          // store token
+          this._JwtService.saveToken(idToken);
 
-            this._LocalStorageHandleService.saveItem({
-              name: "user_id",
-              value: response["data"]["_id"],
-            });
+          this._LocalStorageHandleService.saveItem({
+            name: "user_id",
+            value: response.user.uid,
+          });
 
-            this._MsgHandelService.showSuccessMsg("", "Successfully log in");
+          this._MsgHandelService.showSuccessMsg("", "Successfully log in");
 
-            // load the home page
-            this._Router.navigateByUrl("/dashboard");
-          },
-          (error) => {
-            // stop loading
-            this.loading = false;
+          this.loading = false;
 
-            // show msg
-            this._MsgHandelService.handleError(error);
-          }
-        );
-      },
-      (error) => {
+          // load the home page
+          this._Router.navigateByUrl("/dashboard");
+        });
+      })
+      .catch((error) => {
         // stop loading
         this.loading = false;
+
         // show msg
         this._MsgHandelService.handleError(error);
-      }
-    );
+
+        console.error("Registration error:", error);
+      });
+
+    // stop loading
   };
 
   ngOnDestroy(): void {}

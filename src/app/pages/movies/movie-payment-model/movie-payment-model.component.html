@@ -119,7 +119,7 @@
             mat-flat-button
             color="primary"
             class="w-100"
-            (click)="handleWithdraw()"
+            (click)="createTicket()"
             [disabled]="!rForm.valid"
           >
             proceed to checkout
@@ -127,7 +127,7 @@
         </form>
       </div>
 
-      <div class="d-flex justify-content-center mt-2">
+      <div class="d-flex justify-content-center mb-3 mt-3">
         <img src="assets/images/card-providers.png" class="col-5" alt="" />
       </div>
     </div>

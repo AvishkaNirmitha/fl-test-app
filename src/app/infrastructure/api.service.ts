@@ -32,20 +32,6 @@ export class MainService extends OnDestroyMixin implements OnDestroy {
     super();
   }
 
-  // Setting Headers for API Request
-  private setHeaders(token?: string): HttpHeaders {
-    const headersConfig: any = {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    };
-    if (this.jwtService.getToken() || token) {
-      headersConfig["Authorization"] = `Bearer ${
-        token || this.jwtService.getToken()
-      }`;
-    }
-    return new HttpHeaders(headersConfig);
-  }
-
   private setFormDataHeader(): HttpHeaders {
     const headersConfig: any = {};
     if (this.jwtService.getToken()) {
@@ -58,7 +44,7 @@ export class MainService extends OnDestroyMixin implements OnDestroy {
   get(path: string, external_api: boolean = false): Observable<any> {
     return this.http
       .get(external_api ? `${path}` : `${environment.api_url}${path}`, {
-        headers: this.setHeaders(),
+        headers: this.setHeaders(""),
       })
       .pipe(untilComponentDestroyed(this))
       .pipe(
@@ -68,6 +54,19 @@ export class MainService extends OnDestroyMixin implements OnDestroy {
           throw error;
         })
       );
+  }
+
+  // Setting Headers for API Request
+  private setHeaders(token: any = ""): HttpHeaders {
+    const headersConfig: any = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    };
+    headersConfig[
+      "x-rapidapi-key"
+    ] = `e8cf04317fmshaa414b13f31e25dp123552jsn15c2d2c53536`;
+    headersConfig["x-rapidapi-host"] = `imdb188.p.rapidapi.com`;
+    return new HttpHeaders(headersConfig);
   }
 
   // Perform a external api GET Request

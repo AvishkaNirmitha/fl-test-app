@@ -8,7 +8,7 @@
       <mat-card class="cardWithShadow boxed-auth">
         <mat-card-content class="p-32">
           <div class="text-center">
-            <a [routerLink]="['/dashboard']">
+            <a [routerLink]="['/movies']">
               <img
                 src="./assets/images/site/main-logo-transparent-bg.png"
                 class="align-middle m-2 logo"
@@ -17,12 +17,39 @@
             </a>
           </div>
 
-          <div class="or-border m-t-30">
-            <ng-container *ngIf="activeTab == 1">sign in with</ng-container>
-            <ng-container *ngIf="activeTab == 2">Verification</ng-container>
+          <div class="row m-t-24 custom-row">
+            <div class="col-12">
+              <button
+                mat-stroked-button=""
+                class="w-100 mdc-button mdc-button--outlined mat-mdc-outlined-button mat-unthemed mat-mdc-button-base"
+                mat-ripple-loader-class-name="mat-mdc-button-ripple"
+                (click)="loginWithGoogle()"
+              >
+                <span
+                  class="mat-mdc-button-persistent-ripple mdc-button__ripple"
+                ></span
+                ><span class="mdc-button__label"
+                  ><div class="d-flex align-items-center">
+                    <img
+                      src="/assets/images/svgs/google-icon.svg"
+                      alt="google"
+                      width="16"
+                      class="m-r-8"
+                    />
+                    Sign in with Google
+                  </div></span
+                ><span class="mat-mdc-focus-indicator"></span
+                ><span class="mat-mdc-button-touch-target"></span
+                ><span class="mat-ripple mat-mdc-button-ripple"></span>
+              </button>
+            </div>
           </div>
 
-          <ng-container *ngIf="activeTab == 1">
+          <div class="or-border m-t-30">
+            <ng-container>sign in with</ng-container>
+          </div>
+
+          <ng-container>
             <form
               role="form"
               class="m-t-30"
@@ -89,13 +116,6 @@
                 >
               </mat-form-field>
 
-              <!-- <div class="d-flex align-items-center m-b-12">
-                <a
-                  [routerLink]="['/']"
-                  class="text-primary f-w-600 text-decoration-none m-l-auto f-s-14"
-                  >Forgot Password ?</a
-                >
-              </div> -->
               <button
                 type="submit"
                 mat-flat-button
@@ -105,10 +125,10 @@
               >
                 Sign In
               </button>
+
               <!-- input -->
             </form>
-            <span class="d-block f-w-500 text-center m-t-24"
-              >New to 28X Club?
+            <span class="d-block f-w-500 text-center m-t-24">
               <a
                 [routerLink]="['/authentication/signup']"
                 class="text-decoration-none text-primary f-w-500 f-s-14"
@@ -116,55 +136,6 @@
                 Create an account</a
               >
             </span>
-            <span class="d-block f-w-500 text-center mt-1">
-              Forgot password ?
-              <a
-                [routerLink]="['/authentication/forgot-password']"
-                class="text-decoration-none text-primary f-w-500 f-s-14"
-                >reset now</a
-              >
-            </span>
-          </ng-container>
-
-          <ng-container *ngIf="activeTab == 2">
-            <form role="form" class="m-t-30" [formGroup]="authCodeForm">
-              <mat-label class="mat-subtitle-2 f-s-14 f-w-600 m-b-12 d-block"
-                >Google 2FA code</mat-label
-              >
-              <mat-form-field
-                appearance="outline"
-                class="w-100"
-                color="primary"
-              >
-                <input
-                  matInput
-                  placeholder="Enter Google 2FA code"
-                  type="text"
-                  formControlName="authCode"
-                  (focus)="authCodeFocus = true"
-                  (blur)="authCodeFocus = false"
-                />
-
-                <mat-error *ngIf="authCode.errors?.['required']"
-                  >Google 2FA code is required</mat-error
-                >
-                <mat-error
-                  *ngIf="authCode.errors?.['pattern']?.['requiredPattern']"
-                  >Google 2FA code should be 6 characters!</mat-error
-                >
-              </mat-form-field>
-
-              <button
-                type="submit"
-                mat-flat-button
-                color="primary"
-                class="w-100"
-                (click)="verifyCode()"
-                [disabled]="!authCodeForm.valid"
-              >
-                Log in
-              </button>
-            </form>
           </ng-container>
         </mat-card-content>
       </mat-card>
